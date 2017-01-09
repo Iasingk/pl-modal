@@ -1,5 +1,24 @@
-.pl-modal-overlay {
+body.modal-shown {
+	overflow: hidden;
+	
+	-webkit-filter: blur(1);
+	filter: blur(1);
+}
 
+.pl-overlay {
+	background-color: transparent;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+
+	-webkit-transition: background-color 375ms;
+	transition: background-color 375ms;
+}
+
+.pl-overlay.shown {
+	background-color: rgba(0, 0, 0, .75);
 }
 
 .pl-modal {

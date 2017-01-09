@@ -51,6 +51,12 @@ var pl;
          * @constructor
          */
         function PLModal() {
+            // 
+            this._body = document.body;
+            // 
+            this.buildOut();
+            // 
+            this.initializeEvents();
         }
         Object.defineProperty(PLModal, "instance", {
             /**
@@ -67,14 +73,57 @@ var pl;
             configurable: true
         });
         /**
+         * [buildOut description]
+         */
+        PLModal.prototype.buildOut = function () {
+            // Create elements.
+            this._overlay = document.createElement('div');
+            this._modal = document.createElement('div');
+            this._closeButton = document.createElement('div');
+            // Assign classes.
+            this._overlay.className = 'pl-overlay';
+            this._modal.className = 'pl-modal';
+            this._closeButton.className = 'pl-close-button';
+        };
+        /**
+         * [initializeEvents description]
+         */
+        PLModal.prototype.initializeEvents = function () {
+            var _this = this;
+            console.log('Events initialized');
+            // Events
+            this._modalDisplayed = new pl.PLEvent();
+            document.addEventListener('keydown', function (ev) {
+                if (ev.keyCode == 27)
+                    _this.hide();
+            }, false);
+        };
+        /**
+         * [onModalDisplayed description]
+         */
+        PLModal.prototype.onModalDisplayed = function () {
+            if (!this._modalDisplayed) {
+                this._modalDisplayed.fire();
+            }
+        };
+        /**
          * [show description]
          */
         PLModal.prototype.show = function () {
+            this._body.appendChild(this._overlay);
+            // this._body.appendChild(this._modal);
+            // this._body.appendChild(this._closeButton);
+            window.getComputedStyle(this._overlay).backgroundColor;
+            window.getComputedStyle(this._modal);
+            this._overlay.className += ' shown';
+            this._modal.className += ' shown';
         };
         /**
          * [hide description]
          */
         PLModal.prototype.hide = function () {
+            console.log(this._overlay);
+            this._overlay.parentNode.removeChild(this._overlay);
         };
         return PLModal;
     }());

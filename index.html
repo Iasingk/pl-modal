@@ -8,9 +8,27 @@
 		<link rel="stylesheet" href="styles/styles.css">
 	</head>
 	<body>
-		
+		<h1>PL Modal</h1>
+
+		<button id="open-modal">Click me!</button>
+
 		<!-- Include PLModal script -->
 		<!-- <script src="scripts/js/pl-modal.min.js"></script> -->
 		<script src="scripts/js/pl-modal.js"></script>
+		<script>
+			(function(d) {
+				'use strict';
+
+				var openModal = d.getElementById('open-modal');
+
+				openModal.addEventListener('click', function(){
+					var modal = new pl.PLModal();
+
+					modal.show();
+
+				}, false);
+
+			})(document);
+		</script>
 	</body>
 </html>

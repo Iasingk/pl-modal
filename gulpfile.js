@@ -44,7 +44,7 @@
 
         livereload.listen();
 
-        gulp.watch(files, ['reload']);
+        gulp.watch(files, ['typescript', 'reload']);
     });
 
 
