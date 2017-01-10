@@ -20,11 +20,14 @@
 				'use strict';
 
 				var openModal = d.getElementById('open-modal');
+				var modal = new pl.PLModal();
+
+				modal.modalDisplayed.add(() => {
+					console.log('modal displayed');
+				});
 
 				openModal.addEventListener('click', function(){
-					var modal = new pl.PLModal();
-
-					modal.show();
+					modal.open();
 
 				}, false);
 

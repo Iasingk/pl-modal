@@ -75,6 +75,9 @@ module pl {
 			this._modal       = document.createElement('div');
 			this._closeButton = document.createElement('div');
 
+			// 
+			this._modal.appendChild(this._closeButton);
+
 			// Assign classes.
 			this._overlay.className     = 'pl-overlay';
 			this._modal.className       = 'pl-modal';
@@ -85,48 +88,79 @@ module pl {
 		 * [initializeEvents description]
 		 */
 		private initializeEvents() {
-			console.log('Events initialized');
+			//
+			this._closeButton.addEventListener('click', (ev) => {
+				this.close();
+			}, false);
 
-			// Events
-			this._modalDisplayed = new PLEvent();
-
+			//
 			document.addEventListener('keydown', (ev) => {
 				if (ev.keyCode == 27) 
-					this.hide();
+					this.close();
 			}, false);
 		}
 
 		/**
-		 * [onModalDisplayed description]
+		 * Fires when modal is displyaed.
 		 */
 		private onModalDisplayed() {
-			if (!this._modalDisplayed) {
+			if (this._modalDisplayed) {
 				this._modalDisplayed.fire();
 			}
 		}
 
 		/**
-		 * [show description]
+		 *
 		 */
-		public show() {
-			this._body.appendChild(this._overlay);
-			// this._body.appendChild(this._modal);
-			// this._body.appendChild(this._closeButton);
+		private get transitionend(): string {
+			var el = document.createElement('div');
 
-			window.getComputedStyle(this._overlay).backgroundColor;
+			if (el.style.WebkitTransition) return 'webkitTransitionEnd';
+			if (el.style.OTransition) return 'oTransitionEnd';
+			return 'transitionend';
+		}
+
+		/**
+		 *
+		 */
+		public get modalDisplayed(): PLEvent {
+			if (!this._modalDisplayed) {
+				this._modalDisplayed = new PLEvent();
+			}
+
+			return this._modalDisplayed;
+		}
+
+		/**
+		 * Open modal and add to DOM.
+		 */
+		public open() {
+			this._body.appendChild(this._overlay);
+			this._body.appendChild(this._modal);
+
+			window.getComputedStyle(this._overlay).background;
 			window.getComputedStyle(this._modal);
 
 			this._overlay.className += ' shown';
 			this._modal.className += ' shown';
 
+			//
+			this.onModalDisplayed();
+
 		}
 
 		/**
-		 * [hide description]
+		 * Close modal and remove from DOM.
 		 */
-		public hide() {
-			console.log(this._overlay);
-			this._overlay.parentNode.removeChild(this._overlay);
+		public close() {
+			let overlay = this._overlay;
+			let modal   = this._modal;
+
+			overlay.className = overlay.className.replace(/(\s+)?shown/, '');
+			overlay.parentNode.removeChild(overlay);
+
+			modal.className = modal.className.replace(/(\s+)?shown/, '');
+			modal.parentNode.removeChild(modal);
 		}
 		
 	}
