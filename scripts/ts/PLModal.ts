@@ -2,72 +2,59 @@ module pl {
 
 	export class PLModal {
 		
-		/**
-		 * [_instance description]
-		 * @type {PLModal}
-		 */
-		private static _instance: PLModal;
+		// region Static
+        // endregion
 
-		/**
-		 * [instance description]
-		 * @return {PLModal} [description]
-		 */
-		public static get instance(): PLModal {
-			if (!PLModal._instance) {
-				PLModal._instance = new PLModal();
-			}
+        // region Fields
 
-			return PLModal.instance;
-		}
-
-		/**
-		 * [_body description]
+        /**
+		 * Body element.
 		 * @type {HTMLElement}
 		 */
 		private _body: HTMLElement;
 
 		/**
-		 * [_overlay description]
+		 * Overlay element.
 		 * @type {HTMLElement}
 		 */
 		private _overlay: HTMLElement;
 
 		/**
-		 * [_modal description]
+		 * Modal element.
 		 * @type {HTMLElement}
 		 */
 		private _modal: HTMLElement;
 
 		/**
-		 * [_closeButton description]
+		 * Close button element.
 		 * @type {HTMLElement}
 		 */
 		private _closeButton: HTMLElement;
 
 		/**
-		 * [modalDisplayed description]
-		 * @type {PLEvent}
+		 * Flag that indicate if the modal is opened or not.
+		 * @type {boolean}
 		 */
-		private _modalDisplayed: PLEvent;
+		private _opened: boolean = false;
+
+        // endregion
 
 		/**
-		 * [constructor description]
+		 * Create an instance of PLModal.
 		 * @constructor
 		 */
 		constructor() {
-			// 
 			this._body = document.body;
 
-			// 
 			this.buildOut();
-
-			// 
 			this.initializeEvents();
 
 		}
 
+		//region Private Methods
+
 		/**
-		 * [buildOut description]
+		 * Create PLModal elements.
 		 */
 		private buildOut() {
 			// Create elements.
@@ -75,7 +62,7 @@ module pl {
 			this._modal       = document.createElement('div');
 			this._closeButton = document.createElement('div');
 
-			// 
+			// Close button should be in modal.
 			this._modal.appendChild(this._closeButton);
 
 			// Assign classes.
@@ -85,32 +72,68 @@ module pl {
 		}
 
 		/**
-		 * [initializeEvents description]
+		 * Attach handlers to PlModal elements.
 		 */
 		private initializeEvents() {
-			//
-			this._closeButton.addEventListener('click', (ev) => {
-				this.close();
-			}, false);
+			let ESC_KEY = 27;
 
-			//
 			document.addEventListener('keydown', (ev) => {
-				if (ev.keyCode == 27) 
+				if (ev.keyCode == ESC_KEY) 
 					this.close();
 			}, false);
+
+			this._closeButton.addEventListener('click', (ev) => { this.close(); }, false);
+			this._overlay.addEventListener(this.transitionend, () => {  });
+
+			this._modal.addEventListener(this.transitionend, () => {
+				if (this._opened) {
+					this.onModalClosed();
+				} else {
+					this.onModalOpened();
+				}
+			});
+
+
 		}
 
 		/**
-		 * Fires when modal is displyaed.
-		 */
-		private onModalDisplayed() {
-			if (this._modalDisplayed) {
-				this._modalDisplayed.fire();
+         * Fires when modal open.
+         */
+		private onModalOpened() {
+			if (this._modalOpened) {
+				this._modalOpened.fire();
 			}
+
+			this._opened = true;
 		}
 
 		/**
-		 *
+		 * Fies when modal closes.
+		 */
+		private onModalClosed() {
+			if (this._modalClosed) {
+				this._modalClosed.fire();
+			}
+
+			this._opened = false;
+
+			this.removeFromDom();
+		}
+
+		/**
+		 * Remove elements from DOM.
+		 */
+		private removeFromDom() {
+			let overlay = this._overlay;
+			let modal   = this._modal;
+
+			overlay.parentNode.removeChild(overlay);
+			modal.parentNode.removeChild(modal);
+		}
+
+		/**
+		 * Get transitionend event depending of the browser.
+		 * @returns {string}
 		 */
 		private get transitionend(): string {
 			var el = document.createElement('div');
@@ -120,21 +143,15 @@ module pl {
 			return 'transitionend';
 		}
 
-		/**
-		 *
-		 */
-		public get modalDisplayed(): PLEvent {
-			if (!this._modalDisplayed) {
-				this._modalDisplayed = new PLEvent();
-			}
+        //endregion
 
-			return this._modalDisplayed;
-		}
+        //region Methods
 
-		/**
+        /**
 		 * Open modal and add to DOM.
 		 */
 		public open() {
+
 			this._body.appendChild(this._overlay);
 			this._body.appendChild(this._modal);
 
@@ -143,9 +160,6 @@ module pl {
 
 			this._overlay.className += ' shown';
 			this._modal.className += ' shown';
-
-			//
-			this.onModalDisplayed();
 
 		}
 
@@ -157,11 +171,54 @@ module pl {
 			let modal   = this._modal;
 
 			overlay.className = overlay.className.replace(/(\s+)?shown/, '');
-			overlay.parentNode.removeChild(overlay);
-
 			modal.className = modal.className.replace(/(\s+)?shown/, '');
-			modal.parentNode.removeChild(modal);
+			
 		}
+
+        //endregion
+
+        //region Events
+
+        /**
+		 * Modal opened event.
+		 * @type {PLEvent}
+		 */
+		private _modalOpened: PLEvent;
+
+        /**
+		 * Get the modalOpened event.
+		 * @return {PLEvent}
+		 */
+		public get modalOpened(): PLEvent {
+			if (!this._modalOpened) {
+				this._modalOpened = new PLEvent();
+			}
+
+			return this._modalOpened;
+		}
+
+		/**
+		 * Modal closed event.
+		 * @type {PLEvent}
+		 */
+		private _modalClosed: PLEvent;
+
+		/**
+		 * Get the modalClosed event.
+		 * @return {PLEvent}
+		 */
+		public get modalClosed(): PLEvent {
+			if (!this._modalClosed) {
+				this._modalClosed = new PLEvent();
+			}
+
+			return this._modalClosed;
+		}
+
+        //endregion
+
+        //region Properties
+        //endregion
 		
 	}
 

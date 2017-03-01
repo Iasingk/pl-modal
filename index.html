@@ -22,8 +22,12 @@
 				var openModal = d.getElementById('open-modal');
 				var modal = new pl.PLModal();
 
-				modal.modalDisplayed.add(() => {
-					console.log('modal displayed');
+				modal.modalOpened.add(() => {
+					console.log('modal opened');
+				});
+
+				modal.modalClosed.add(() => {
+					console.log('modal closed');
 				});
 
 				openModal.addEventListener('click', function(){
