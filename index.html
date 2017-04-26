@@ -8,9 +8,14 @@
 		<link rel="stylesheet" href="styles/styles.css">
 	</head>
 	<body>
-		<h1>PL Modal</h1>
 
-		<button id="open-modal">Click me!</button>
+		<!-- Cover -->
+		<div id="cover">	
+			<h1>PL Modal</h1>
+			<button>Open modal</button>
+		</div>
+		<!-- ./Cover -->
+
 
 		<!-- Include PLModal script -->
 		<!-- <script src="scripts/js/pl-modal.min.js"></script> -->
@@ -19,8 +24,11 @@
 			(function(d) {
 				'use strict';
 
-				var openModal = d.getElementById('open-modal');
+				var cover = d.getElementById('cover');
+				var button = cover.getElementsByTagName('button')[0];
+				
 				var modal = new pl.PLModal();
+
 
 				modal.modalOpened.add(() => {
 					console.log('modal opened');
@@ -30,7 +38,7 @@
 					console.log('modal closed');
 				});
 
-				openModal.addEventListener('click', function(){
+				button.addEventListener('click', function(){
 					modal.open();
 
 				}, false);
