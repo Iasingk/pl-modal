@@ -88,7 +88,6 @@ var pl;
                     _this.close();
             }, false);
             this._closeButton.addEventListener('click', function (ev) { _this.close(); }, false);
-            this._overlay.addEventListener(this.transitionend, function () { });
             this._modal.addEventListener(this.transitionend, function () {
                 if (_this._opened) {
                     _this.onModalClosed();
@@ -136,14 +135,13 @@ var pl;
                 var transEndEventNames = {
                     WebkitTransition: 'webkitTransitionEnd',
                     MozTransition: 'transitionend',
-                    OTransition: 'oTransitionEnd otransitionend',
+                    OTransition: 'otransitionend',
                     transition: 'transitionend'
                 };
                 for (var name_1 in transEndEventNames) {
                     if (el.style[name_1] !== undefined)
                         return transEndEventNames[name_1];
                 }
-                return false;
             },
             enumerable: true,
             configurable: true
@@ -156,7 +154,8 @@ var pl;
         PLModal.prototype.open = function () {
             this._body.appendChild(this._overlay);
             this._body.appendChild(this._modal);
-            window.getComputedStyle(this._overlay).background;
+            // Force the browser to recognize the elements that we just added.
+            window.getComputedStyle(this._overlay).backgroundColor;
             window.getComputedStyle(this._modal);
             this._overlay.className += ' shown';
             this._modal.className += ' shown';

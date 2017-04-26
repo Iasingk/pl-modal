@@ -51,7 +51,7 @@ module pl {
 
 		}
 
-		//region Private Methods
+		// region Private Methods
 
 		/**
 		 * Create PLModal elements.
@@ -83,7 +83,6 @@ module pl {
 			}, false);
 
 			this._closeButton.addEventListener('click', (ev) => { this.close(); }, false);
-			this._overlay.addEventListener(this.transitionend, () => {  });
 
 			this._modal.addEventListener(this.transitionend, () => {
 				if (this._opened) {
@@ -141,7 +140,7 @@ module pl {
 			let transEndEventNames = {
 				WebkitTransition : 'webkitTransitionEnd',
 				MozTransition    : 'transitionend',
-				OTransition      : 'oTransitionEnd otransitionend',
+				OTransition      : 'otransitionend',
 				transition       : 'transitionend'
 			};
 
@@ -149,13 +148,11 @@ module pl {
 				if (el.style[name] !== undefined) 
 					return transEndEventNames[name];
 			}
-
-			return false;
 		}
 
-        //endregion
+        // endregion
 
-        //region Methods
+        // region Methods
 
         /**
 		 * Open modal and add to DOM.
@@ -165,7 +162,8 @@ module pl {
 			this._body.appendChild(this._overlay);
 			this._body.appendChild(this._modal);
 
-			window.getComputedStyle(this._overlay).background;
+			// Force the browser to recognize the elements that we just added.
+			window.getComputedStyle(this._overlay).backgroundColor;
 			window.getComputedStyle(this._modal);
 
 			this._overlay.className += ' shown';
@@ -185,9 +183,9 @@ module pl {
 			
 		}
 
-        //endregion
+        // endregion
 
-        //region Events
+        // region Events
 
         /**
 		 * Modal opened event.
@@ -225,10 +223,10 @@ module pl {
 			return this._modalClosed;
 		}
 
-        //endregion
+        // endregion
 
-        //region Properties
-        //endregion
+        // region Properties
+        // endregion
 		
 	}
 
