@@ -133,11 +133,17 @@ var pl;
              */
             get: function () {
                 var el = document.createElement('div');
-                if (el.style.WebkitTransition)
-                    return 'webkitTransitionEnd';
-                if (el.style.OTransition)
-                    return 'oTransitionEnd';
-                return 'transitionend';
+                var transEndEventNames = {
+                    WebkitTransition: 'webkitTransitionEnd',
+                    MozTransition: 'transitionend',
+                    OTransition: 'oTransitionEnd otransitionend',
+                    transition: 'transitionend'
+                };
+                for (var name_1 in transEndEventNames) {
+                    if (el.style[name_1] !== undefined)
+                        return transEndEventNames[name_1];
+                }
+                return false;
             },
             enumerable: true,
             configurable: true

@@ -15,7 +15,7 @@ body {
 }
 
 body {
-	background-color: #1f72a8;
+	background-color: #258bcd;
 	color: #fff;
 	font-family: 'Source Sans Pro', sans-serif;
     font-size: 15px;
@@ -59,7 +59,7 @@ body.modal-shown {
 }
 
 #cover button {
-	background-color: #5a93b8;
+	background-color: #53a9e1;
 	border: none;
 	color: #fff;
 	font-family: inherit;
@@ -83,12 +83,11 @@ body.modal-shown {
 }
 
 .pl-overlay.shown {
-	background-color: rgba(0, 0, 0, .75);
+	background-color: rgba(0, 0, 0, .65);
 }
 
 .pl-modal {
 	background-color: #fff;
-	border-radius: 5px;
 	height: 200px;
 	left: 50%;
 	margin-left: -250px;

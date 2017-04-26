@@ -136,11 +136,21 @@ module pl {
 		 * @returns {string}
 		 */
 		private get transitionend(): string {
-			var el = document.createElement('div');
+			let el = document.createElement('div');
 
-			if (el.style.WebkitTransition) return 'webkitTransitionEnd';
-			if (el.style.OTransition) return 'oTransitionEnd';
-			return 'transitionend';
+			let transEndEventNames = {
+				WebkitTransition : 'webkitTransitionEnd',
+				MozTransition    : 'transitionend',
+				OTransition      : 'oTransitionEnd otransitionend',
+				transition       : 'transitionend'
+			};
+
+			for (let name in transEndEventNames) {
+				if (el.style[name] !== undefined) 
+					return transEndEventNames[name];
+			}
+
+			return false;
 		}
 
         //endregion
