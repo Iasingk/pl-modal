@@ -26,21 +26,13 @@
 
 				var cover = d.getElementById('cover');
 				var button = cover.getElementsByTagName('button')[0];
-				
 				var modal = new pl.PLModal();
 
+				// modal.modalOpen.add(() => { console.log('modal opened'); });
+				// modal.modalClose.add(() => { console.log('modal closed'); });
 
-				modal.modalOpened.add(() => {
-					console.log('modal opened');
-				});
-
-				modal.modalClosed.add(() => {
-					console.log('modal closed');
-				});
-
-				button.addEventListener('click', function(){
+				button.addEventListener('click', ev => {
 					modal.open();
-
 				}, false);
 
 			})(document);

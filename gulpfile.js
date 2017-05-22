@@ -65,6 +65,7 @@
 
         // Source files.
         var srcFiles = [
+            '!' + srcPath.ts + '**/backup.ts',
             srcPath.ts + '**/*.ts'
         ];
 

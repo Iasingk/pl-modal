@@ -1,17 +1,6 @@
 module pl {
 
 	export class PLModal {
-		
-		// region Static
-        // endregion
-
-        // region Fields
-
-        /**
-		 * Body element.
-		 * @type {HTMLElement}
-		 */
-		private _body: HTMLElement;
 
 		/**
 		 * Overlay element.
@@ -31,30 +20,38 @@ module pl {
 		 */
 		private _closeButton: HTMLElement;
 
-		/**
-		 * Flag that indicate if the modal is opened or not.
-		 * @type {boolean}
-		 */
-		private _opened: boolean = false;
+        /**
+         * Flag that indicate if the modal is open or not.
+         * @type {boolean}
+         */
+        private _isOpen: boolean = false;
 
-        // endregion
+		/**
+		 * Modal close event.
+		 * @type {PLEvent}
+		 */
+		private _modalClose: PLEvent;
+
+        /**
+         * Modal open event.
+         * @type {PLEvent}
+         */
+        private _modalOpen: PLEvent;
+
 
 		/**
 		 * Create an instance of PLModal.
 		 * @constructor
 		 */
 		constructor() {
-			this._body = document.body;
-
 			this.buildOut();
 			this.initializeEvents();
 
 		}
 
-		// region Private Methods
 
 		/**
-		 * Create PLModal elements.
+		 * Create modal elements.
 		 */
 		private buildOut() {
 			// Create elements.
@@ -69,55 +66,59 @@ module pl {
 			this._overlay.className     = 'pl-overlay';
 			this._modal.className       = 'pl-modal';
 			this._closeButton.className = 'pl-close-button';
+
 		}
 
 		/**
-		 * Attach handlers to PlModal elements.
+		 * Attach handlers to modal elements.
 		 */
 		private initializeEvents() {
-			let ESC_KEY = 27;
+            let ESC_KEY = 27;
 
-			document.addEventListener('keydown', (ev) => {
-				if (ev.keyCode == ESC_KEY) 
-					this.close();
+			// Close modal if user press esc key.
+			document.addEventListener('keydown', ev => {
+				if (ev.keyCode == ESC_KEY) this.close();
 			}, false);
 
-			this._closeButton.addEventListener('click', (ev) => { this.close(); }, false);
+			// Close modal if user clicks the close button.
+			this._closeButton.addEventListener('click', ev => {
+				this.close();
+			}, false);
 
-			this._modal.addEventListener(this.transitionend, () => {
-				if (this._opened) {
-					this.onModalClosed();
-				} else {
-					this.onModalOpened();
-				}
+			// Attach handler when transition ends.
+			this._modal.addEventListener(this.transitionend, ev => {
+                if (this._isOpen) {
+                    this.onModalClose();
+                } else {
+                    this.onModalOpen();
+                }
 			});
 
-
 		}
 
-		/**
+        /**
          * Fires when modal open.
          */
-		private onModalOpened() {
-			if (this._modalOpened) {
-				this._modalOpened.fire();
-			}
+        private onModalOpen() {
+            if (this._modalOpen) {
+                this._modalOpen.fire();
+            }
 
-			this._opened = true;
-		}
+            this._isOpen = true;
+        }
 
-		/**
-		 * Fies when modal closes.
-		 */
-		private onModalClosed() {
-			if (this._modalClosed) {
-				this._modalClosed.fire();
-			}
+        /**
+         * Fires when modal closes.
+         */
+        private onModalClose() {
+            if (this._modalClose) {
+                this._modalClose.fire();
+            }
 
-			this._opened = false;
+            this.removeFromDom();
 
-			this.removeFromDom();
-		}
+            this._isOpen = false;
+        }
 
 		/**
 		 * Remove elements from DOM.
@@ -132,7 +133,7 @@ module pl {
 
 		/**
 		 * Get transitionend event depending of the browser.
-		 * @returns {string}
+		 * @return {string}
 		 */
 		private get transitionend(): string {
 			let el = document.createElement('div');
@@ -145,31 +146,11 @@ module pl {
 			};
 
 			for (let name in transEndEventNames) {
-				if (el.style[name] !== undefined) 
+				if (el.style[name] !== undefined)
 					return transEndEventNames[name];
 			}
 		}
 
-        // endregion
-
-        // region Methods
-
-        /**
-		 * Open modal and add to DOM.
-		 */
-		public open() {
-
-			this._body.appendChild(this._overlay);
-			this._body.appendChild(this._modal);
-
-			// Force the browser to recognize the elements that we just added.
-			window.getComputedStyle(this._overlay).backgroundColor;
-			window.getComputedStyle(this._modal);
-
-			this._overlay.className += ' shown';
-			this._modal.className += ' shown';
-
-		}
 
 		/**
 		 * Close modal and remove from DOM.
@@ -178,56 +159,72 @@ module pl {
 			let overlay = this._overlay;
 			let modal   = this._modal;
 
-			overlay.className = overlay.className.replace(/(\s+)?shown/, '');
-			modal.className = modal.className.replace(/(\s+)?shown/, '');
-			
+			overlay.className = overlay.className.replace(/(\s+)?open/, '');
+			modal.className = modal.className.replace(/(\s+)?open/, '');
+
 		}
-
-        // endregion
-
-        // region Events
 
         /**
-		 * Modal opened event.
-		 * @type {PLEvent}
-		 */
-		private _modalOpened: PLEvent;
+         * Utility method to extend defaults with user settings
+         * @param {object} source
+         * @param {object} settings
+         * @return {object}
+         */
+        public extendsDefaults(source, settings) {
+            let property;
+
+            for (property in settings) {
+                if (settings.hasOwnProperty(property))
+                    source[property] = settings[property];
+            }
+
+            return source;
+        }
 
         /**
-		 * Get the modalOpened event.
-		 * @return {PLEvent}
-		 */
-		public get modalOpened(): PLEvent {
-			if (!this._modalOpened) {
-				this._modalOpened = new PLEvent();
-			}
+         * Get modal close event.
+         * @return {PLEvent}
+         */
+        public get modalClose() {
+            if (!this._modalClose) {
+                this._modalClose = new PLEvent();
+            }
 
-			return this._modalOpened;
-		}
+            return this._modalClose;
+        }
+
+        /**
+         * Get modal open event.
+         * @return {PLEvent}
+         */
+        public get modalOpen() {
+            if (!this._modalOpen) {
+                this._modalOpen = new PLEvent();
+            }
+
+            return this._modalOpen;
+        }
 
 		/**
-		 * Modal closed event.
-		 * @type {PLEvent}
+		 * Add modal to DOM and show it.
 		 */
-		private _modalClosed: PLEvent;
+		public open() {
+            let body    = document.body;
+			let	overlay = this._overlay;
+			let	modal   = this._modal;
 
-		/**
-		 * Get the modalClosed event.
-		 * @return {PLEvent}
-		 */
-		public get modalClosed(): PLEvent {
-			if (!this._modalClosed) {
-				this._modalClosed = new PLEvent();
-			}
+			body.appendChild(overlay);
+			body.appendChild(modal);
 
-			return this._modalClosed;
+			// Force the browser to recognize the elements that we just added.
+			window.getComputedStyle(overlay).backgroundColor;
+			window.getComputedStyle(modal).height;
+
+			overlay.className += ' open';
+			modal.className += ' open';
+
 		}
 
-        // endregion
-
-        // region Properties
-        // endregion
-		
 	}
 
 }
