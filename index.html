@@ -28,8 +28,8 @@
 				var button = cover.getElementsByTagName('button')[0];
 				var modal = new pl.PLModal();
 
-				// modal.modalOpen.add(() => { console.log('modal opened'); });
-				// modal.modalClose.add(() => { console.log('modal closed'); });
+				modal.modalOpen.add(() => { console.log('modal opened'); });
+				modal.modalClose.add(() => { console.log('modal closed'); });
 
 				button.addEventListener('click', ev => {
 					modal.open();
