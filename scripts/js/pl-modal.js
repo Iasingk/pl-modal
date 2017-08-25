@@ -87,14 +87,12 @@ var pl;
             this._closeButton.addEventListener('click', function (ev) {
                 _this.close();
             }, false);
-            // Attach handler when transition ends.
-            /* this._modal.addEventListener(this.transitionend, ev => {
-                if (this._isOpen) {
-                    this.onModalClose();
-                } else {
-                    this.onModalOpen();
-                }
-            });*/
+            // Bind "this" context to toggleTransition handler.
+            this.toggleTransitionend = this.toggleTransitionend.bind(this);
+            // Attach handler to transitionend event, when the event occurs for the first time
+            // remove the event because transitionend will execute the same times as
+            // styles modified.
+            this._modal.addEventListener(this.transitionend, this.toggleTransitionend, false);
         };
         /**
          * Fires when modal open.
@@ -146,28 +144,24 @@ var pl;
             configurable: true
         });
         /**
-         *
+         * Control the flow of transitionend handler.
+         * @param {TransitionEvent} ev
          */
-        PLModal.prototype.closing = function () {
-        };
-        /**
-         *
-         */
-        PLModal.prototype.opening = function (ev) {
-            console.log('WTF?');
-            if (!this._isOpen) {
-                console.log('open');
-                ev.target.removeEventListener(ev.type, arguments.callee);
-                this.onModalOpen();
-            }
-            else {
-                console.log('close');
-            }
+        PLModal.prototype.toggleTransitionend = function (ev) {
+            var _this = this;
+            var modal = this._modal, functionToCall = this._isOpen ? this.onModalClose : this.onModalOpen;
+            modal.removeEventListener(this.transitionend, this.toggleTransitionend);
+            functionToCall.call(this);
+            setTimeout(function () {
+                modal.addEventListener(_this.transitionend, _this.toggleTransitionend, false);
+            }, 50);
         };
         /**
          * Close modal and remove from DOM.
          */
         PLModal.prototype.close = function () {
+            if (!this._isOpen)
+                return;
             var overlay = this._overlay;
             var modal = this._modal;
             overlay.className = overlay.className.replace(/(\s+)?open/, '');
@@ -219,13 +213,11 @@ var pl;
          * Add modal to DOM and show it.
          */
         PLModal.prototype.open = function () {
+            if (this._isOpen)
+                return;
             var body = document.body;
             var overlay = this._overlay;
             var modal = this._modal;
-            // Attach handler to transitionend event, when the event occurs for the first time
-            // remove the event because transitionend will execute the same times as
-            // styles modified.
-            modal.addEventListener(this.transitionend, this.opening.bind(this));
             body.appendChild(overlay);
             body.appendChild(modal);
             // Force the browser to recognize the elements that we just added.

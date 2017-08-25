@@ -82,14 +82,13 @@ module pl {
 				this.close();
 			}, false);
 
-			// Attach handler when transition ends.
-			/* this._modal.addEventListener(this.transitionend, ev => {
-                if (this._isOpen) {
-                    this.onModalClose();
-                } else {
-                    this.onModalOpen();
-                }
-			});*/
+			// Bind "this" context to toggleTransition handler.
+			this.toggleTransitionend = this.toggleTransitionend.bind(this);
+
+			// Attach handler to transitionend event, when the event occurs for the first time
+			// remove the event because transitionend handler will execute the same times as
+			// styles modified.
+			this._modal.addEventListener(this.transitionend, this.toggleTransitionend, false);
 
 		}
 
@@ -149,30 +148,28 @@ module pl {
 		}
 
 		/**
-		 *
+		 * Control the flow of transitionend handler and modal.
+		 * @param {TransitionEvent} ev
 		 */
-		private closing() {
+		private toggleTransitionend(ev) {
+			let modal = this._modal,
+				functionToCall = this._isOpen ? this.onModalClose : this.onModalOpen;
 
-		}
+			modal.removeEventListener(this.transitionend, this.toggleTransitionend);
+			functionToCall.call(this);
 
-		/**
-		 *
-		 */
-		private opening(ev) {
-			console.log('WTF?');
-			if (!this._isOpen) {
-				console.log('open');
-				ev.target.removeEventListener(ev.type, <EventListener>arguments.callee);
-				this.onModalOpen();
-			} else {
-				console.log('close');
-			}
+			setTimeout(() => {
+				modal.addEventListener(this.transitionend, this.toggleTransitionend, false);
+			}, 50);
+
 		}
 
 		/**
 		 * Close modal and remove from DOM.
 		 */
 		public close() {
+			if (!this._isOpen) return;
+
 			let overlay = this._overlay;
 			let modal   = this._modal;
 
@@ -226,14 +223,11 @@ module pl {
 		 * Add modal to DOM and show it.
 		 */
 		public open() {
+			if (this._isOpen) return;
+
             let body    = document.body;
 			let	overlay = this._overlay;
 			let	modal   = this._modal;
-
-			// Attach handler to transitionend event, when the event occurs for the first time
-			// remove the event because transitionend will execute the same times as
-			// styles modified.
-			modal.addEventListener(this.transitionend, this.opening.bind(this));
 
 			body.appendChild(overlay);
 			body.appendChild(modal);
