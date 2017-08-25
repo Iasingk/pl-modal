@@ -3,7 +3,6 @@ var pl;
     var PLEvent = (function () {
         /**
          * Create a PLEvent instance.
-         *
          * @constructor
          */
         function PLEvent() {
@@ -12,7 +11,6 @@ var pl;
         }
         /**
          * Add new handler.
-         *
          * @param {function} handler
          */
         PLEvent.prototype.add = function (handler) {
@@ -90,14 +88,13 @@ var pl;
                 _this.close();
             }, false);
             // Attach handler when transition ends.
-            this._modal.addEventListener(this.transitionend, function (ev) {
-                if (_this._isOpen) {
-                    _this.onModalClose();
+            /* this._modal.addEventListener(this.transitionend, ev => {
+                if (this._isOpen) {
+                    this.onModalClose();
+                } else {
+                    this.onModalOpen();
                 }
-                else {
-                    _this.onModalOpen();
-                }
-            });
+            });*/
         };
         /**
          * Fires when modal open.
@@ -148,6 +145,25 @@ var pl;
             enumerable: true,
             configurable: true
         });
+        /**
+         *
+         */
+        PLModal.prototype.closing = function () {
+        };
+        /**
+         *
+         */
+        PLModal.prototype.opening = function (ev) {
+            console.log('WTF?');
+            if (!this._isOpen) {
+                console.log('open');
+                ev.target.removeEventListener(ev.type, arguments.callee);
+                this.onModalOpen();
+            }
+            else {
+                console.log('close');
+            }
+        };
         /**
          * Close modal and remove from DOM.
          */
@@ -206,6 +222,10 @@ var pl;
             var body = document.body;
             var overlay = this._overlay;
             var modal = this._modal;
+            // Attach handler to transitionend event, when the event occurs for the first time
+            // remove the event because transitionend will execute the same times as
+            // styles modified.
+            modal.addEventListener(this.transitionend, this.opening.bind(this));
             body.appendChild(overlay);
             body.appendChild(modal);
             // Force the browser to recognize the elements that we just added.

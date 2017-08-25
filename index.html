@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>PL Modal</title>
+    <head>
+        <meta charset="utf-8">
+        <title>PL Modal</title>
 
-		<!-- Include PLModal styles -->
-		<link rel="stylesheet" href="styles/styles.css">
-	</head>
-	<body>
+        <!-- Include PLModal styles -->
+        <link rel="stylesheet" href="styles/styles.css">
+    </head>
+    <body>
 
-		<!-- Cover -->
-		<div id="cover">	
-			<h1>PL Modal</h1>
-			<button>Open modal</button>
-		</div>
-		<!-- ./Cover -->
+        <!-- Cover -->
+        <div id="cover">
+            <h1>PL Modal</h1>
+            <button>Open modal</button>
+        </div>
+        <!-- ./Cover -->
 
 
-		<!-- Include PLModal script -->
-		<!-- <script src="scripts/js/pl-modal.min.js"></script> -->
-		<script src="scripts/js/pl-modal.js"></script>
-		<script>
-			(function(d) {
-				'use strict';
+        <!-- Include PLModal script -->
+        <!-- <script src="scripts/js/pl-modal.min.js"></script> -->
+        <script src="scripts/js/pl-modal.js"></script>
+        <script>
+            (function (d) {
+                'use strict';
 
-				var cover = d.getElementById('cover');
-				var button = cover.getElementsByTagName('button')[0];
-				var modal = new pl.PLModal();
+                var cover = d.getElementById('cover');
+                var button = cover.getElementsByTagName('button')[0];
+                var modal = new pl.PLModal();
 
-				modal.modalOpen.add(() => { console.log('modal opened'); });
-				modal.modalClose.add(() => { console.log('modal closed'); });
+                modal.modalOpen.add(() => { console.log('modal opened'); }, false);
+                modal.modalClose.add(() => { console.log('modal closed'); }, false);
 
-				button.addEventListener('click', ev => {
-					modal.open();
-				}, false);
+                button.addEventListener('click', ev => { modal.open(); }, false);
 
-			})(document);
-		</script>
-	</body>
+            })(document);
+        </script>
+    </body>
 </html>

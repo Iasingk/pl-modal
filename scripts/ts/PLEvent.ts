@@ -3,7 +3,7 @@ module pl {
 	export class PLEvent {
 		
 		/**
-		 * @type {array<function>}
+		 * @type {Array<function>}
 		 */
 		private _handlers: Array<() => {}>;
 
@@ -14,17 +14,15 @@ module pl {
 
 		/**
 		 * Create a PLEvent instance.
-		 * 
 		 * @constructor
 		 */
 		constructor() {
-			this._handlers = []
+			this._handlers = [];
 			this._scope    = this || window;
 		}
 
 		/**
 		 * Add new handler.
-		 * 
 		 * @param {function} handler
 		 */
 		public add(handler: () => {}) {

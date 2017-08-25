@@ -38,7 +38,6 @@ module pl {
          */
         private _modalOpen: PLEvent;
 
-
 		/**
 		 * Create an instance of PLModal.
 		 * @constructor
@@ -46,9 +45,7 @@ module pl {
 		constructor() {
 			this.buildOut();
 			this.initializeEvents();
-
 		}
-
 
 		/**
 		 * Create modal elements.
@@ -86,13 +83,13 @@ module pl {
 			}, false);
 
 			// Attach handler when transition ends.
-			this._modal.addEventListener(this.transitionend, ev => {
+			/* this._modal.addEventListener(this.transitionend, ev => {
                 if (this._isOpen) {
                     this.onModalClose();
                 } else {
                     this.onModalOpen();
                 }
-			});
+			});*/
 
 		}
 
@@ -151,6 +148,26 @@ module pl {
 			}
 		}
 
+		/**
+		 *
+		 */
+		private closing() {
+
+		}
+
+		/**
+		 *
+		 */
+		private opening(ev) {
+			console.log('WTF?');
+			if (!this._isOpen) {
+				console.log('open');
+				ev.target.removeEventListener(ev.type, <EventListener>arguments.callee);
+				this.onModalOpen();
+			} else {
+				console.log('close');
+			}
+		}
 
 		/**
 		 * Close modal and remove from DOM.
@@ -212,6 +229,11 @@ module pl {
             let body    = document.body;
 			let	overlay = this._overlay;
 			let	modal   = this._modal;
+
+			// Attach handler to transitionend event, when the event occurs for the first time
+			// remove the event because transitionend will execute the same times as
+			// styles modified.
+			modal.addEventListener(this.transitionend, this.opening.bind(this));
 
 			body.appendChild(overlay);
 			body.appendChild(modal);
