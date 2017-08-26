@@ -43,61 +43,108 @@ var pl;
     pl.PLEvent = PLEvent;
 })(pl || (pl = {}));
 (function (pl) {
-    var PLModal = (function () {
+    var Modal = (function () {
         /**
-         * Create an instance of PLModal.
+         * Create an instance of Modal.
          * @constructor
+         * @param {object} settings
          */
-        function PLModal() {
+        function Modal(settings) {
             /**
              * Flag that indicate if the modal is open or not.
              * @type {boolean}
              */
             this._isOpen = false;
+            // Define default options.
+            var defaults = {
+                className: 'fade-and-scale',
+                avoidClose: true
+            };
+            // Create settings by extending defaults with passed
+            // settings in constructor.
+            this._settings = Modal.extendsDefaults(defaults, settings || {});
+            // Select transitionend that browser support.
+            this._transitionend = Modal.transitionSelect();
             this.buildOut();
             this.initializeEvents();
         }
         /**
+         * Get transitionend event depending of the browser.
+         * @return {string}
+         */
+        Modal.transitionSelect = function () {
+            var el = document.createElement('div');
+            var transEndEventNames = {
+                WebkitTransition: 'webkitTransitionEnd',
+                MozTransition: 'transitionend',
+                OTransition: 'otransitionend',
+                transition: 'transitionend'
+            };
+            for (var name_1 in transEndEventNames) {
+                if (el.style[name_1] !== undefined)
+                    return transEndEventNames[name_1];
+            }
+        };
+        ;
+        /**
+         * Utility method to extend defaults with user settings
+         * @param {object} source
+         * @param {object} settings
+         * @return {object}
+         */
+        Modal.extendsDefaults = function (source, settings) {
+            var property;
+            for (property in settings) {
+                if (settings.hasOwnProperty(property))
+                    source[property] = settings[property];
+            }
+            return source;
+        };
+        /**
          * Create modal elements.
          */
-        PLModal.prototype.buildOut = function () {
-            // Create elements.
+        Modal.prototype.buildOut = function () {
+            // Create overlay element.
             this._overlay = document.createElement('div');
+            this._overlay.className = 'pl-modal-overlay';
+            // Create modal element.
             this._modal = document.createElement('div');
-            this._closeButton = document.createElement('div');
-            // Close button should be in modal.
-            this._modal.appendChild(this._closeButton);
-            // Assign classes.
-            this._overlay.className = 'pl-overlay';
-            this._modal.className = 'pl-modal';
-            this._closeButton.className = 'pl-close-button';
+            this._modal.className = 'pl-modal' + ' ' + this._settings['className'];
+            // Create close button element.
+            if (this._settings['avoidClose']) {
+                this._closeButton = document.createElement('div');
+                this._closeButton.className = 'pl-modal-close-button';
+                this._modal.appendChild(this._closeButton);
+            }
         };
         /**
          * Attach handlers to modal elements.
          */
-        PLModal.prototype.initializeEvents = function () {
+        Modal.prototype.initializeEvents = function () {
             var _this = this;
-            var ESC_KEY = 27;
-            // Close modal if user press esc key.
-            document.addEventListener('keydown', function (ev) {
-                if (ev.keyCode == ESC_KEY)
+            if (this._settings['avoidClose']) {
+                var ESC_KEY_1 = 27;
+                // Close modal if user press esc key.
+                document.addEventListener('keydown', function (ev) {
+                    if (ev.keyCode == ESC_KEY_1)
+                        _this.close();
+                }, false);
+                // Close modal if user clicks the close button.
+                this._closeButton.addEventListener('click', function (ev) {
                     _this.close();
-            }, false);
-            // Close modal if user clicks the close button.
-            this._closeButton.addEventListener('click', function (ev) {
-                _this.close();
-            }, false);
+                }, false);
+            }
             // Bind "this" context to toggleTransition handler.
             this.toggleTransitionend = this.toggleTransitionend.bind(this);
             // Attach handler to transitionend event, when the event occurs for the first time
-            // remove the event because transitionend will execute the same times as
+            // remove the event because transitionend handler will execute the same times as
             // styles modified.
-            this._modal.addEventListener(this.transitionend, this.toggleTransitionend, false);
+            this._modal.addEventListener(this._transitionend, this.toggleTransitionend, false);
         };
         /**
          * Fires when modal open.
          */
-        PLModal.prototype.onModalOpen = function () {
+        Modal.prototype.onModalOpen = function () {
             if (this._modalOpen) {
                 this._modalOpen.fire();
             }
@@ -106,7 +153,7 @@ var pl;
         /**
          * Fires when modal closes.
          */
-        PLModal.prototype.onModalClose = function () {
+        Modal.prototype.onModalClose = function () {
             if (this._modalClose) {
                 this._modalClose.fire();
             }
@@ -116,72 +163,37 @@ var pl;
         /**
          * Remove elements from DOM.
          */
-        PLModal.prototype.removeFromDom = function () {
+        Modal.prototype.removeFromDom = function () {
             var overlay = this._overlay;
             var modal = this._modal;
             overlay.parentNode.removeChild(overlay);
             modal.parentNode.removeChild(modal);
         };
-        Object.defineProperty(PLModal.prototype, "transitionend", {
-            /**
-             * Get transitionend event depending of the browser.
-             * @return {string}
-             */
-            get: function () {
-                var el = document.createElement('div');
-                var transEndEventNames = {
-                    WebkitTransition: 'webkitTransitionEnd',
-                    MozTransition: 'transitionend',
-                    OTransition: 'otransitionend',
-                    transition: 'transitionend'
-                };
-                for (var name_1 in transEndEventNames) {
-                    if (el.style[name_1] !== undefined)
-                        return transEndEventNames[name_1];
-                }
-            },
-            enumerable: true,
-            configurable: true
-        });
         /**
-         * Control the flow of transitionend handler.
+         * Control the flow of transitionend handler and modal.
          * @param {TransitionEvent} ev
          */
-        PLModal.prototype.toggleTransitionend = function (ev) {
+        Modal.prototype.toggleTransitionend = function (ev) {
             var _this = this;
             var modal = this._modal, functionToCall = this._isOpen ? this.onModalClose : this.onModalOpen;
-            modal.removeEventListener(this.transitionend, this.toggleTransitionend);
+            modal.removeEventListener(this._transitionend, this.toggleTransitionend);
             functionToCall.call(this);
             setTimeout(function () {
-                modal.addEventListener(_this.transitionend, _this.toggleTransitionend, false);
+                modal.addEventListener(_this._transitionend, _this.toggleTransitionend, false);
             }, 50);
         };
         /**
          * Close modal and remove from DOM.
          */
-        PLModal.prototype.close = function () {
+        Modal.prototype.close = function () {
             if (!this._isOpen)
                 return;
             var overlay = this._overlay;
             var modal = this._modal;
-            overlay.className = overlay.className.replace(/(\s+)?open/, '');
-            modal.className = modal.className.replace(/(\s+)?open/, '');
+            overlay.className = overlay.className.replace(/(\s+)?modal-open/, '');
+            modal.className = modal.className.replace(/(\s+)?modal-open/, '');
         };
-        /**
-         * Utility method to extend defaults with user settings
-         * @param {object} source
-         * @param {object} settings
-         * @return {object}
-         */
-        PLModal.prototype.extendsDefaults = function (source, settings) {
-            var property;
-            for (property in settings) {
-                if (settings.hasOwnProperty(property))
-                    source[property] = settings[property];
-            }
-            return source;
-        };
-        Object.defineProperty(PLModal.prototype, "modalClose", {
+        Object.defineProperty(Modal.prototype, "modalClose", {
             /**
              * Get modal close event.
              * @return {PLEvent}
@@ -195,7 +207,7 @@ var pl;
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(PLModal.prototype, "modalOpen", {
+        Object.defineProperty(Modal.prototype, "modalOpen", {
             /**
              * Get modal open event.
              * @return {PLEvent}
@@ -211,8 +223,9 @@ var pl;
         });
         /**
          * Add modal to DOM and show it.
+         * @param {HTMLElement} content
          */
-        PLModal.prototype.open = function () {
+        Modal.prototype.open = function (content) {
             if (this._isOpen)
                 return;
             var body = document.body;
@@ -223,10 +236,10 @@ var pl;
             // Force the browser to recognize the elements that we just added.
             window.getComputedStyle(overlay).backgroundColor;
             window.getComputedStyle(modal).height;
-            overlay.className += ' open';
-            modal.className += ' open';
+            overlay.className += ' modal-open';
+            modal.className += ' modal-open';
         };
-        return PLModal;
+        return Modal;
     }());
-    pl.PLModal = PLModal;
+    pl.Modal = Modal;
 })(pl || (pl = {}));
