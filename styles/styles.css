@@ -2,22 +2,22 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200);
 
 * {
-	-webkit-box-sizing: border-box; 
-  	-moz-box-sizing: border-box; 
-  	box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body {
-	height: 100%;
-	margin: 0;
-	width: 100%;
+    height: 100%;
+    margin: 0;
+    width: 100%;
 }
 
 body {
-	background-color: #258bcd;
-	color: #fff;
-	font-family: 'Source Sans Pro', sans-serif;
+    background-color: #258bcd;
+    color: #fff;
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 15px;
     font-weight: 200;
 
@@ -35,170 +35,163 @@ body {
 }
 
 body.modal-open {
-	overflow: hidden;
-	
-	-webkit-filter: blur(1);
-	filter: blur(1);
-}
+    overflow: hidden;
 
+    -webkit-filter: blur(1);
+    filter: blur(1);
+}
 
 /* Cover Styles */
 #cover {
-	left: 50%;
-	position: absolute;
-	top: 50%;
-	text-align: center;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    text-align: center;
 
-	transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
-#cover h1 { 
-	font-size: 6.333em;
-	font-weight: 200;
-	margin: 0 0 .25em 0;
+#cover h1 {
+    font-size: 6.333em;
+    font-weight: 200;
+    margin: 0 0 .25em 0;
 }
 
 #cover button {
-	background-color: #53a9e1;
-	border: none;
-	color: #fff;
-	font-family: inherit;
-	font-size: 1.333em;
-	font-weight: 300;
-	padding: .25em 1em;
+    background-color: #53a9e1;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1.333em;
+    font-weight: 300;
+    padding: .25em 1em;
 }
-
 
 /* Modal Styles */
 .pl-modal-overlay {
-	background-color: transparent;
-	bottom: 0;
-	left: 0;
-	position: fixed;
-	right: 0;
-	top: 0;
+    background-color: transparent;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
 
-	-webkit-transition: background-color 575ms;
-	transition: background-color 575ms;
+    -webkit-transition: background-color 375ms;
+    transition: background-color 375ms;
 }
 
 .pl-modal-overlay.modal-open {
-	background-color: rgba(0, 0, 0, .65);
+    background-color: rgba(0, 0, 0, .65);
 }
 
 .pl-modal {
-	background-color: #fff;
-	height: 200px;
-	left: 50%;
-	margin-left: -250px;
-	margin-top: -100px;
-	opacity: 0;
-	position: fixed;
-	top: 50%;
-	width: 500px;
+    background-color: #fff;
+    height: 200px;
+    left: 50%;
+    margin-left: -250px;
+    margin-top: -100px;
+    opacity: 0;
+    position: fixed;
+    top: 50%;
+    width: 500px;
 
-	-webkit-transition: opacity 575ms;
-	transition: opacity 575ms;
+    -webkit-transition: opacity 375ms;
+    transition: opacity 375ms;
 }
 
 .pl-modal.modal-open {
-	opacity: 1;
+    opacity: 1;
+}
+
+.pl-modal-content {
+
 }
 
 .pl-modal-close-button {
-	cursor: pointer;
-	position: absolute;
-	right: 15px;
-	top: 15px;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 15px;
 }
 
 .pl-modal-close-button:after {
-	color: #258bcd;
-	content: 'x';
-	font-size: 25px;
-	font-weight: 300;
-	line-height: 15px;
+    color: #258bcd;
+    content: 'x';
+    font-size: 25px;
+    font-weight: 300;
+    line-height: 15px;
 }
 
 /* Modal Animations */
-.pl-modal.zoom-in-and-fade {
-	opacity: 0;
+/* Effect 1: Fade in and scale up */
+.pl-modal.fadein-and-scaleup {
+    opacity: 0;
 
-	-webkit-transform: scale(0);
-	-moz-transform: scale(0);
-	-ms-transform: scale(0);
-	-o-transform: scale(0);
-	transform: scale(0);
+    -webkit-transform: scale(0.7);
+    -moz-transform: scale(0.7);
+    -ms-transform: scale(0.7);
+    -o-transform: scale(0.7);
+    transform: scale(0.7);
 
-	-webkit-transition: opacity 575ms, -webkit-transform 575ms;
-	-moz-transition: opacity 575ms, -moz-transform 575ms;
-	-ms-transition: opacity 575ms, -ms-transform 575ms;
-	-o-transition: opacity 575ms, -o-transform 575ms;
-	transition: opacity 575ms, transform 575ms;
+    -webkit-transition: opacity 375ms, -webkit-transform 375ms;
+    -moz-transition: opacity 375ms, -moz-transform 375ms;
+    -ms-transition: opacity 375ms, -ms-transform 375ms;
+    -o-transition: opacity 375ms, -o-transform 375ms;
+    transition: opacity 375ms, transform 375ms;
 }
 
-.pl-modal.zoom-in-and-fade.modal-open {
-	opacity: 1;
+.pl-modal.fadein-and-scaleup.modal-open {
+    opacity: 1;
 
-	-webkit-transform: scale(1);
-	-moz-transform: scale(1);
-	-ms-transform: scale(1);
-	-o-transform: scale(1);
-	transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
 }
 
+/* Effect 2: Slide from the right */
+.pl-modal.slide-from-right {
+    opacity: 0;
 
-.pl-modal.zoom-out-and-fade {
-	opacity: 0;
+    -webkit-transform: translateX(20%);
+    -moz-transform: translateX(20%);
+    -ms-transform: translateX(20%);
+    transform: translateX(20%);
 
-	-webkit-transform: scale(2);
-	-moz-transform: scale(2);
-	-ms-transform: scale(2);
-	-o-transform: scale(2);
-	transform: scale(2);
-
-	-webkit-transition: opacity 575ms, -webkit-transform 575ms;
-	-moz-transition: opacity 575ms, -moz-transform 575ms;
-	-ms-transition: opacity 575ms, -ms-transform 575ms;
-	-o-transition: opacity 575ms, -o-transform 575ms;
-	transition: opacity 575ms, transform 575ms;
+    -webkit-transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+    -moz-transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+    transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
 }
 
-.pl-modal.zoom-out-and-fade.modal-open {
-	opacity: 1;
+.pl-modal.slide-from-right.modal-open {
+    opacity: 1;
 
-	-webkit-transform: scale(1);
-	-moz-transform: scale(1);
-	-ms-transform: scale(1);
-	-o-transform: scale(1);
-	transform: scale(1);
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
 }
 
+/* Effect 3: Slide from the bottom */
+.pl-modal.slide-from-bottom {
+    opacity: 0;
 
-.pl-modal.drop-and-fade {
-	margin-top: auto;
-	opacity: 0;
-	top: 50%;
+    -webkit-transform: translateY(20%);
+    -moz-transform: translateY(20%);
+    -ms-transform: translateY(20%);
+    transform: translateY(20%);
 
-	-webkit-transform: translateY(-300%);
-	-moz-transform: translateY(-300%);
-	-ms-transform: translateY(-300%);
-	-o-transform: translateY(-300%);
-	transform: translateY(-300%);
-
-	-webkit-transition: opacity 575ms, -webkit-transform 575ms;
-	-moz-transition: opacity 575ms, -moz-transform 575ms;
-	-ms-transition: opacity 575ms, -ms-transform 575ms;
-	-o-transition: opacity 575ms, -o-transform 575ms;
-	transition: opacity 575ms, transform 575ms;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
 }
 
-.pl-modal.drop-and-fade.modal-open {
-	opacity: 1;
+.pl-modal.slide-from-bottom.modal-open {
+    opacity: 1;
 
-	-webkit-transform: translateY(-50%);
-	-moz-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	-o-transform: translateY(-50%);
-	transform: translateY(-50%);
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
 }

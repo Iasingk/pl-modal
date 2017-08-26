@@ -57,7 +57,7 @@ var pl;
             this._isOpen = false;
             // Define default options.
             var defaults = {
-                className: 'fade-and-scale',
+                className: '',
                 avoidClose: true
             };
             // Create settings by extending defaults with passed
@@ -110,6 +110,10 @@ var pl;
             // Create modal element.
             this._modal = document.createElement('div');
             this._modal.className = 'pl-modal' + ' ' + this._settings['className'];
+            // Create modal content.
+            this._content = document.createElement('div');
+            this._content.className = 'pl-modal-content';
+            this._modal.appendChild(this._content);
             // Create close button element.
             if (this._settings['avoidClose']) {
                 this._closeButton = document.createElement('div');
@@ -223,9 +227,8 @@ var pl;
         });
         /**
          * Add modal to DOM and show it.
-         * @param {HTMLElement} content
          */
-        Modal.prototype.open = function (content) {
+        Modal.prototype.open = function () {
             if (this._isOpen)
                 return;
             var body = document.body;
@@ -238,6 +241,19 @@ var pl;
             window.getComputedStyle(modal).height;
             overlay.className += ' modal-open';
             modal.className += ' modal-open';
+        };
+        /**
+         * Set modal content.
+         * @param {HTMLElement|string} content
+         */
+        Modal.prototype.setContent = function (content) {
+            if (content === void 0) { content = ""; }
+            // Empty content element.
+            this._content.innerHTML = '';
+            if ("string" === typeof content)
+                this._content.appendChild(document.createTextNode(content));
+            else
+                this._content.appendChild(content);
         };
         return Modal;
     }());

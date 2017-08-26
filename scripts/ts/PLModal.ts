@@ -15,6 +15,12 @@ module pl {
 		private _modal: HTMLElement;
 
 		/**
+		 * Modal content.
+		 * @type {HTMLElement}
+		 */
+		private _content: HTMLElement;
+
+		/**
 		 * Close button element.
 		 * @type {HTMLElement}
 		 */
@@ -76,7 +82,7 @@ module pl {
 		 * @param {object} settings
 		 * @return {object}
 		 */
-		static extendsDefaults(source, settings) {
+		static extendsDefaults(source: Object, settings: Object) {
 			let property;
 
 			for (property in settings) {
@@ -92,10 +98,10 @@ module pl {
 		 * @constructor
 		 * @param {object} settings
 		 */
-		constructor(settings) {
+		constructor(settings: Object) {
 			// Define default options.
 			let defaults = {
-				className: 'fade-and-scale',
+				className: '',
 				avoidClose: true
 			};
 
@@ -121,6 +127,11 @@ module pl {
 			// Create modal element.
 			this._modal = document.createElement('div');
 			this._modal.className = 'pl-modal' + ' ' + this._settings['className'];
+
+			// Create modal content.
+			this._content = document.createElement('div');
+			this._content.className = 'pl-modal-content';
+			this._modal.appendChild(this._content);
 
 			// Create close button element.
 			if (this._settings['avoidClose']) {
@@ -198,7 +209,7 @@ module pl {
 		 * Control the flow of transitionend handler and modal.
 		 * @param {TransitionEvent} ev
 		 */
-		private toggleTransitionend(ev) {
+		private toggleTransitionend(ev: TransitionEvent) {
 			let modal = this._modal,
 				functionToCall = this._isOpen ? this.onModalClose : this.onModalOpen;
 
@@ -251,9 +262,8 @@ module pl {
 
 		/**
 		 * Add modal to DOM and show it.
-		 * @param {HTMLElement} content
 		 */
-		public open(content) {
+		public open() {
 			if (this._isOpen) return;
 
             let body    = document.body;
@@ -269,6 +279,21 @@ module pl {
 
 			overlay.className += ' modal-open';
 			modal.className += ' modal-open';
+
+		}
+
+		/**
+		 * Set modal content.
+		 * @param {HTMLElement|string} content
+		 */
+		public setContent(content: any = "") {
+			// Empty content element.
+			this._content.innerHTML = '';
+
+			if ("string" === typeof content)
+				this._content.appendChild( document.createTextNode(content) );
+			else
+				this._content.appendChild(content);
 
 		}
 

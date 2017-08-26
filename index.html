@@ -27,13 +27,15 @@
                 var cover = d.getElementById('cover');
                 var button = cover.getElementsByTagName('button')[0];
                 var modal = new pl.Modal({
-                    className: 'drop-and-fade'
+                    className: 'slide-from-bottom'
                 });
+
+                modal.setContent('Hello world!');
 
                 modal.modalOpen.add(() => { console.log('modal opened'); }, false);
                 modal.modalClose.add(() => { console.log('modal closed'); }, false);
 
-                button.addEventListener('click', ev => { modal.open(); }, false);
+                button.addEventListener('click', ev => { modal.open("Hola mundo!"); }, false);
 
             })(document);
         </script>
