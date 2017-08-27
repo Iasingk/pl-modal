@@ -241,7 +241,7 @@ var pl;
             body.appendChild(modal);
             // Force the browser to recognize the elements that we just added.
             window.getComputedStyle(overlay).backgroundColor;
-            window.getComputedStyle(modal).height;
+            window.getComputedStyle(modal).opacity;
             window.getComputedStyle(content).opacity;
             overlay.className += ' modal-open';
             modal.className += ' modal-open';
