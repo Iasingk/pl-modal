@@ -14,7 +14,23 @@
             <h1>PL Modal</h1>
             <button>Open modal</button>
         </div>
-        <!-- ./Cover -->
+        <!-- /.Cover -->
+
+        <!-- Dummy Template -->
+        <div class="hidden">
+            <div class="dummy-template">
+                <h3>PLModal</h3>
+                <div>
+                    <p>This is a modal window. You can do the following things with it:</p>
+                    <ul>
+                        <li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+                        <li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+                        <li><strong>Close:</strong> click on the button below to close the modal.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /.Dummy Template -->
 
 
         <!-- Include PLModal script -->
@@ -26,16 +42,13 @@
 
                 var cover = d.getElementById('cover');
                 var button = cover.getElementsByTagName('button')[0];
-                var modal = new pl.Modal({
-                    className: 'slide-from-bottom'
-                });
-
-                modal.setContent('Hello world!');
+                var modal = new pl.Modal({ className: 'effect-3' });
+                var dummyTemplate = d.querySelector('.dummy-template');
 
                 modal.modalOpen.add(() => { console.log('modal opened'); }, false);
                 modal.modalClose.add(() => { console.log('modal closed'); }, false);
 
-                button.addEventListener('click', ev => { modal.open("Hola mundo!"); }, false);
+                button.addEventListener('click', ev => { modal.open(dummyTemplate); }, false);
 
             })(document);
         </script>

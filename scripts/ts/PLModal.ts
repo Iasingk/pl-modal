@@ -137,7 +137,7 @@ module pl {
 			if (this._settings['avoidClose']) {
 				this._closeButton = document.createElement('div');
 				this._closeButton.className = 'pl-modal-close-button';
-				this._modal.appendChild(this._closeButton);
+				this._content.appendChild(this._closeButton);
 			}
 
 		}
@@ -166,7 +166,7 @@ module pl {
 			// Attach handler to transitionend event, when the event occurs for the first time
 			// remove the event because transitionend handler will execute the same times as
 			// styles modified.
-			this._modal.addEventListener(this._transitionend, this.toggleTransitionend, false);
+			this._content.addEventListener(this._transitionend, this.toggleTransitionend, false);
 
 		}
 
@@ -210,14 +210,14 @@ module pl {
 		 * @param {TransitionEvent} ev
 		 */
 		private toggleTransitionend(ev: TransitionEvent) {
-			let modal = this._modal,
+			let content = this._content,
 				functionToCall = this._isOpen ? this.onModalClose : this.onModalOpen;
 
-			modal.removeEventListener(this._transitionend, this.toggleTransitionend);
+			content.removeEventListener(this._transitionend, this.toggleTransitionend);
 			functionToCall.call(this);
 
 			setTimeout(() => {
-				modal.addEventListener(this._transitionend, this.toggleTransitionend, false);
+				content.addEventListener(this._transitionend, this.toggleTransitionend, false);
 			}, 50);
 
 		}
@@ -262,13 +262,17 @@ module pl {
 
 		/**
 		 * Add modal to DOM and show it.
+		 * @param {HTMLElement|string} element
 		 */
-		public open() {
+		public open(element?) {
 			if (this._isOpen) return;
 
-            let body    = document.body;
-			let	overlay = this._overlay;
-			let	modal   = this._modal;
+            let body     = document.body;
+			let	overlay  = this._overlay;
+			let	modal    = this._modal;
+			let content = this._content;
+
+			this.setContent(element);
 
 			body.appendChild(overlay);
 			body.appendChild(modal);
@@ -276,6 +280,7 @@ module pl {
 			// Force the browser to recognize the elements that we just added.
 			window.getComputedStyle(overlay).backgroundColor;
 			window.getComputedStyle(modal).height;
+			window.getComputedStyle(content).opacity;
 
 			overlay.className += ' modal-open';
 			modal.className += ' modal-open';
@@ -284,16 +289,19 @@ module pl {
 
 		/**
 		 * Set modal content.
-		 * @param {HTMLElement|string} content
+		 * @param {HTMLElement|string} element
 		 */
-		public setContent(content: any = "") {
-			// Empty content element.
-			this._content.innerHTML = '';
+		public setContent(element: any = "") {
+			let content = this._content;
 
-			if ("string" === typeof content)
-				this._content.appendChild( document.createTextNode(content) );
+			// Empty content element.
+			content.innerHTML = '';
+			content.appendChild(this._closeButton);
+
+			if ("string" === typeof element)
+				content.appendChild( document.createTextNode(element) );
 			else
-				this._content.appendChild(content);
+				content.appendChild(element);
 
 		}
 

@@ -41,6 +41,11 @@ body.modal-open {
     filter: blur(1);
 }
 
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
 /* Cover Styles */
 #cover {
     left: 50%;
@@ -67,6 +72,7 @@ body.modal-open {
     padding: .25em 1em;
 }
 
+
 /* Modal Styles */
 .pl-modal-overlay {
     background-color: transparent;
@@ -85,18 +91,24 @@ body.modal-open {
 }
 
 .pl-modal {
-    background-color: #fff;
-    height: 200px;
+    background-color: transparent;
     left: 50%;
-    margin-left: -250px;
-    margin-top: -100px;
     opacity: 0;
     position: fixed;
     top: 50%;
     width: 500px;
 
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    
     -webkit-transition: opacity 375ms;
-    transition: opacity 375ms;
+    -moz-transition: opacity 375ms ;
+    -ms-transition: opacity 375ms ;
+    -o-transition: opacity 375ms ;
+    transition: opacity 375ms ;
 }
 
 .pl-modal.modal-open {
@@ -104,7 +116,8 @@ body.modal-open {
 }
 
 .pl-modal-content {
-
+    background-color: #258bcd;
+    color: #fff;
 }
 
 .pl-modal-close-button {
@@ -115,7 +128,7 @@ body.modal-open {
 }
 
 .pl-modal-close-button:after {
-    color: #258bcd;
+    color: #fff;
     content: 'x';
     font-size: 25px;
     font-weight: 300;
@@ -124,7 +137,7 @@ body.modal-open {
 
 /* Modal Animations */
 /* Effect 1: Fade in and scale up */
-.pl-modal.fadein-and-scaleup {
+.pl-modal.effect-1 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform: scale(0.7);
@@ -140,7 +153,7 @@ body.modal-open {
     transition: opacity 375ms, transform 375ms;
 }
 
-.pl-modal.fadein-and-scaleup.modal-open {
+.pl-modal.effect-1.modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: scale(1);
@@ -151,7 +164,7 @@ body.modal-open {
 }
 
 /* Effect 2: Slide from the right */
-.pl-modal.slide-from-right {
+.pl-modal.effect-2 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform: translateX(20%);
@@ -164,7 +177,7 @@ body.modal-open {
     transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
 }
 
-.pl-modal.slide-from-right.modal-open {
+.pl-modal.effect-2.modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: translateX(0);
@@ -174,10 +187,10 @@ body.modal-open {
 }
 
 /* Effect 3: Slide from the bottom */
-.pl-modal.slide-from-bottom {
+.pl-modal.effect-3 .pl-modal-content {
     opacity: 0;
 
-    -webkit-transform: translateY(20%);
+    -webkit-transform: translateY( 20%);
     -moz-transform: translateY(20%);
     -ms-transform: translateY(20%);
     transform: translateY(20%);
@@ -187,11 +200,31 @@ body.modal-open {
     transition: all 0.3s;
 }
 
-.pl-modal.slide-from-bottom.modal-open {
+.pl-modal.effect-3.modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: translateY(0);
     -moz-transform: translateY(0);
     -ms-transform: translateY(0);
     transform: translateY(0);
+}
+
+
+/* Dummy Template */
+.dummy-template h3 {
+    background-color: #53a9e1;
+    font-size: 45px;
+    font-weight: 300;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+.dummy-template strong {
+    font-weight: 400;
+}
+
+.dummy-template > div {
+    font-size: 16px;
+    padding: 35px 30px;
 }

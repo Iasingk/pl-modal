@@ -118,7 +118,7 @@ var pl;
             if (this._settings['avoidClose']) {
                 this._closeButton = document.createElement('div');
                 this._closeButton.className = 'pl-modal-close-button';
-                this._modal.appendChild(this._closeButton);
+                this._content.appendChild(this._closeButton);
             }
         };
         /**
@@ -143,7 +143,7 @@ var pl;
             // Attach handler to transitionend event, when the event occurs for the first time
             // remove the event because transitionend handler will execute the same times as
             // styles modified.
-            this._modal.addEventListener(this._transitionend, this.toggleTransitionend, false);
+            this._content.addEventListener(this._transitionend, this.toggleTransitionend, false);
         };
         /**
          * Fires when modal open.
@@ -179,11 +179,11 @@ var pl;
          */
         Modal.prototype.toggleTransitionend = function (ev) {
             var _this = this;
-            var modal = this._modal, functionToCall = this._isOpen ? this.onModalClose : this.onModalOpen;
-            modal.removeEventListener(this._transitionend, this.toggleTransitionend);
+            var content = this._content, functionToCall = this._isOpen ? this.onModalClose : this.onModalOpen;
+            content.removeEventListener(this._transitionend, this.toggleTransitionend);
             functionToCall.call(this);
             setTimeout(function () {
-                modal.addEventListener(_this._transitionend, _this.toggleTransitionend, false);
+                content.addEventListener(_this._transitionend, _this.toggleTransitionend, false);
             }, 50);
         };
         /**
@@ -227,33 +227,39 @@ var pl;
         });
         /**
          * Add modal to DOM and show it.
+         * @param {HTMLElement|string} element
          */
-        Modal.prototype.open = function () {
+        Modal.prototype.open = function (element) {
             if (this._isOpen)
                 return;
             var body = document.body;
             var overlay = this._overlay;
             var modal = this._modal;
+            var content = this._content;
+            this.setContent(element);
             body.appendChild(overlay);
             body.appendChild(modal);
             // Force the browser to recognize the elements that we just added.
             window.getComputedStyle(overlay).backgroundColor;
             window.getComputedStyle(modal).height;
+            window.getComputedStyle(content).opacity;
             overlay.className += ' modal-open';
             modal.className += ' modal-open';
         };
         /**
          * Set modal content.
-         * @param {HTMLElement|string} content
+         * @param {HTMLElement|string} element
          */
-        Modal.prototype.setContent = function (content) {
-            if (content === void 0) { content = ""; }
+        Modal.prototype.setContent = function (element) {
+            if (element === void 0) { element = ""; }
+            var content = this._content;
             // Empty content element.
-            this._content.innerHTML = '';
-            if ("string" === typeof content)
-                this._content.appendChild(document.createTextNode(content));
+            content.innerHTML = '';
+            content.appendChild(this._closeButton);
+            if ("string" === typeof element)
+                content.appendChild(document.createTextNode(element));
             else
-                this._content.appendChild(content);
+                content.appendChild(element);
         };
         return Modal;
     }());
