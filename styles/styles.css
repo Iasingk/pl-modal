@@ -72,7 +72,6 @@ body.modal-open {
     padding: .25em 1em;
 }
 
-
 /* Modal Styles */
 .pl-modal-overlay {
     background-color: transparent;
@@ -103,12 +102,12 @@ body.modal-open {
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    
+
     -webkit-transition: opacity 375ms;
-    -moz-transition: opacity 375ms ;
-    -ms-transition: opacity 375ms ;
-    -o-transition: opacity 375ms ;
-    transition: opacity 375ms ;
+    -moz-transition: opacity 375ms;
+    -ms-transition: opacity 375ms;
+    -o-transition: opacity 375ms;
+    transition: opacity 375ms;
 }
 
 .pl-modal.modal-open {
@@ -134,6 +133,7 @@ body.modal-open {
     font-weight: 300;
     line-height: 15px;
 }
+
 
 /* Modal Animations */
 /* Effect 1: Fade in and scale up */
@@ -190,7 +190,7 @@ body.modal-open {
 .pl-modal.effect-3 .pl-modal-content {
     opacity: 0;
 
-    -webkit-transform: translateY( 20%);
+    -webkit-transform: translateY(20%);
     -moz-transform: translateY(20%);
     -ms-transform: translateY(20%);
     transform: translateY(20%);
@@ -207,6 +207,252 @@ body.modal-open {
     -moz-transform: translateY(0);
     -ms-transform: translateY(0);
     transform: translateY(0);
+}
+
+/* Effect 4: Newspaper */
+.pl-modal.effect-4 .pl-modal-content {
+    opacity: 0;
+
+    -webkit-transform: scale(0) rotate(720deg);
+    -moz-transform: scale(0) rotate(720deg);
+    -ms-transform: scale(0) rotate(720deg);
+    transform: scale(0) rotate(720deg);
+
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.pl-modal.effect-4.modal-open .pl-modal-content {
+    -webkit-transform: scale(1) rotate(0deg);
+    -moz-transform: scale(1) rotate(0deg);
+    -ms-transform: scale(1) rotate(0deg);
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+}
+
+/* Effect 5: Fall */
+.pl-modal.effect-5 {
+    -webkit-perspective: 1300px;
+    -moz-perspective: 1300px;
+    perspective: 1300px;
+}
+
+.pl-modal.effect-5 .pl-modal-content {
+    opacity: 0;
+
+    -webkit-transition: all 0.3s ease-in;
+    -moz-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    -webkit-transform: translateZ(600px) rotateX(20deg);
+    -moz-transform: translateZ(600px) rotateX(20deg);
+    -ms-transform: translateZ(600px) rotateX(20deg);
+    transform: translateZ(600px) rotateX(20deg);
+}
+
+.pl-modal.effect-5.modal-open .pl-modal-content {
+    opacity: 1;
+
+    -webkit-transform: translateZ(0px) rotateX(0deg);
+    -moz-transform: translateZ(0px) rotateX(0deg);
+    -ms-transform: translateZ(0px) rotateX(0deg);
+    transform: translateZ(0px) rotateX(0deg);
+}
+
+/* Effect 6: Side fall */
+.pl-modal.effect-6 {
+    -webkit-perspective: 1300px;
+    -moz-perspective: 1300px;
+    perspective: 1300px;
+}
+
+.pl-modal.effect-6 .pl-modal-content {
+    opacity: 0;
+
+    -webkit-transition: all 0.3s ease-in;
+    -moz-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+
+    -webkit-transform: translate(30%) translateZ(600px) rotate(10deg);
+    -moz-transform: translate(30%) translateZ(600px) rotate(10deg);
+    -ms-transform: translate(30%) translateZ(600px) rotate(10deg);
+    transform: translate(30%) translateZ(600px) rotate(10deg);
+
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+.pl-modal.effect-6.modal-open .pl-modal-content {
+    opacity: 1;
+
+    -webkit-transform: translate(0%) translateZ(0) rotate(0deg);
+    -moz-transform: translate(0%) translateZ(0) rotate(0deg);
+    -ms-transform: translate(0%) translateZ(0) rotate(0deg);
+    transform: translate(0%) translateZ(0) rotate(0deg);
+}
+
+/* Effect 7: Slide and stick to top */
+.pl-modal.effect-7 {
+    top: 0;
+
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.pl-modal.effect-7 .pl-modal-content {
+    opacity: 0;
+
+    -webkit-transform: translateY(-200%);
+    -moz-transform: translateY(-200%);
+    -ms-transform: translateY(-200%);
+    transform: translateY(-200%);
+
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    transition: all .3s;
+}
+
+.pl-modal.effect-7.modal-open .pl-modal-content {
+    -webkit-transform: translateY(0%);
+    -moz-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    transform: translateY(0%);
+    border-radius: 0 0 3px 3px;
+    opacity: 1;
+}
+
+/* Effect 8: 3D flip horizontal */
+.pl-modal.effect-8 {
+    -webkit-perspective: 1300px;
+    -moz-perspective: 1300px;
+    perspective: 1300px;
+}
+
+.pl-modal.effect-8 .pl-modal-content {
+    opacity: 0;
+
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    -webkit-transform: rotateY(-70deg);
+    -moz-transform: rotateY(-70deg);
+    -ms-transform: rotateY(-70deg);
+    transform: rotateY(-70deg);
+
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.pl-modal.effect-8.modal-open .pl-modal-content {
+    opacity: 1;
+
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+}
+
+/* Effect 9: 3D flip vertical */
+.pl-modal.effect-9 {
+    -webkit-perspective: 1300px;
+    -moz-perspective: 1300px;
+    perspective: 1300px;
+}
+
+.pl-modal.effect-9 .pl-modal-content {
+    opacity: 0;
+
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    -webkit-transform: rotateX(-70deg);
+    -moz-transform: rotateX(-70deg);
+    -ms-transform: rotateX(-70deg);
+    transform: rotateX(-70deg);
+
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.pl-modal.effect-9.modal-open .pl-modal-content {
+    opacity: 1;
+
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+}
+
+/* Effect 10: 3D sign */
+.pl-modal.effect-10 {
+    -webkit-perspective: 1300px;
+    -moz-perspective: 1300px;
+    perspective: 1300px;
+}
+
+.pl-modal.effect-10 .pl-modal-content {
+    opacity: 0;
+
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    -webkit-transform: rotateX(-60deg);
+    -moz-transform: rotateX(-60deg);
+    -ms-transform: rotateX(-60deg);
+    transform: rotateX(-60deg);
+
+    -webkit-transform-origin: 50% 0;
+    -moz-transform-origin: 50% 0;
+    transform-origin: 50% 0;
+
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.pl-modal.effect-10.modal-open .pl-modal-content {
+    opacity: 1;
+
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+}
+
+/* Effect 11: Super scaled */
+.pl-modal.effect-11 .pl-modal-content {
+    opacity: 0;
+
+    -webkit-transform: scale(2);
+    -moz-transform: scale(2);
+    -ms-transform: scale(2);
+    transform: scale(2);
+
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.pl-modal.effect-11.modal-open .pl-modal-content {
+    opacity: 1;
+
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
 }
 
 

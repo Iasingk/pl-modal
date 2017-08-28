@@ -56,7 +56,7 @@
      * Concatenate and compile typescript files.
      * Reference: https://www.npmjs.com/package/gulp-typescript/
      */
-    gulp.task('typescript', function() {
+    gulp.task('ts', function() {
         var opts = {
         	target: 'ES5',
         	removeComments: false,

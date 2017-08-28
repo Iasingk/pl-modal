@@ -82,7 +82,7 @@ module pl {
          * @param {object} settings
          * @return {object}
          */
-        static extendsDefaults(source:Object, settings:Object) {
+        static extendsDefaults(source: Object, settings: Object) {
             let property;
 
             for (property in settings) {
@@ -98,7 +98,7 @@ module pl {
          * @constructor
          * @param {object} settings
          */
-        constructor(settings:Object) {
+        constructor(settings: Object) {
             // Define default options.
             let defaults = {
                 className: '',
@@ -209,7 +209,7 @@ module pl {
          * Control the flow of transitionend handler and modal.
          * @param {TransitionEvent} ev
          */
-        private toggleTransitionend(ev:TransitionEvent) {
+        private toggleTransitionend(ev: TransitionEvent) {
             let content = this._content,
                 functionToCall = this._isOpen ? this.onModalClose : this.onModalOpen;
 
@@ -291,7 +291,7 @@ module pl {
          * Set modal content.
          * @param {HTMLElement|string} element
          */
-        public setContent(element:any = "") {
+        public setContent(element: any = "") {
             let content = this._content;
 
             // Empty content element.
