@@ -596,3 +596,13 @@ body.modal-open {
     font-size: 16px;
     padding: 35px 30px;
 }
+
+
+@media (max-width: 767px) {
+
+    .pl-modal {
+        max-width: 500px;
+        width: 90%;
+    }
+
+}
