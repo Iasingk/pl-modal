@@ -12,7 +12,7 @@
         <!-- Cover -->
         <div id="cover">
             <h1>PL Modal</h1>
-            <button>Open modal</button>
+            <button id="btn-show-modal">Open modal</button>
         </div>
         <!-- /.Cover -->
 
@@ -34,21 +34,24 @@
 
 
         <!-- Include PLModal script -->
-        <!-- <script src="scripts/js/pl-modal.min.js"></script> -->
-        <script src="scripts/js/pl-modal.js"></script>
+        <script src="scripts/js/pl-modal.min.js"></script>
         <script>
             (function (d) {
                 'use strict';
 
-                var cover = d.getElementById('cover');
-                var button = cover.getElementsByTagName('button')[0];
-                var modal = new pl.Modal({ className: 'effect-11' });
+                // Point to needed elements.
+                var button = d.getElementById('btn-show-modal');
                 var dummyTemplate = d.querySelector('.dummy-template');
 
-                modal.modalOpen.add(() => { console.log('modal opened'); }, false);
-                modal.modalClose.add(() => { console.log('modal closed'); }, false);
+                // Create modal instance.
+                var modal = new pl.Modal({ className: 'effect-11' });
 
-                button.addEventListener('click', ev => { modal.open(dummyTemplate); }, false);
+                // Attach handlers to modal events.
+                modal.opened.add(function() { console.log('modal opened'); });
+                modal.closed.add(function() { console.log('modal closed'); });
+
+                // Show modal on click.
+                button.addEventListener('click', function(ev) { modal.open(dummyTemplate); }, false);
 
             })(document);
         </script>

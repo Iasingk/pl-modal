@@ -1,23 +1,36 @@
 {
   "name": "pl-modal",
   "version": "1.0.0",
-  "description": "",
-  "main": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "modal",
-    "javascript",
-    "typescript"
-  ],
-  "author": "cesarmejia",
-  "license": "MIT",
+  "description": "Typical modal created with javascript and css3 transitions. Customizable by user and easy to implement.",
+  "main": "index.html",
+  "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-livereload": "^3.8.1",
-    "gulp-typescript": "^3.1.3",
-    "typescript": "^2.1.4"
-  }
+    "gulp-typescript": "^3.2.2",
+    "gulp-uglify": "^3.0.0",
+    "typescript": "^2.4.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sexar/pl-modal.git"
+  },
+  "keywords": [
+    "modal",
+    "javascript",
+    "typescript",
+    "css3",
+    "css3",
+    "transitions"
+  ],
+  "author": "cesarmejia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sexar/pl-modal/issues"
+  },
+  "homepage": "https://github.com/Sexar/pl-modal#readme"
 }

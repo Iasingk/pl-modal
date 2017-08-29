@@ -1,20 +1,21 @@
 (function() {
 	'use strict';
 
-	var gulp       = require('gulp'),
-		concat     = require('gulp-concat'),
-		typescript = require('gulp-typescript'),
-		livereload = require('gulp-livereload');
+	const gulp       = require('gulp'),
+		  concat     = require('gulp-concat'),
+		  typescript = require('gulp-typescript'),
+          uglify     = require('gulp-uglify'),
+		  livereload = require('gulp-livereload');
 
 
-	var srcPath = {
+	const srcPath = {
         css : 'styles/',
         ts  : 'scripts/ts/',
         root: ''
     };
 
-    var destPath = {
-        js  : 'scripts/js/',
+    const destPath = {
+        js  : 'scripts/js/'
     };
 
 	// ---------------------------------------------------------------------
@@ -24,7 +25,7 @@
     /**
      * Reload on change.
      */
-    gulp.task('reload', function() {
+    gulp.task('reload', () =>{
         gulp.src(srcPath.root)
             .pipe(livereload());
     });
@@ -34,9 +35,9 @@
      * Use with livereload chrome extension.
      * Reference: https://github.com/vohof/gulp-livereload
      */
-    gulp.task('watch', function() {
+    gulp.task('watch', () =>{
         // Files to be watched.
-        var files = [
+        let files = [
             srcPath.ts   + '**/*.ts',
             srcPath.css  + '**/*.css',
             srcPath.root + '*.html'
@@ -56,25 +57,26 @@
      * Concatenate and compile typescript files.
      * Reference: https://www.npmjs.com/package/gulp-typescript/
      */
-    gulp.task('ts', function() {
-        var opts = {
+    gulp.task('ts', () =>{
+        let opts = {
         	target: 'ES5',
         	removeComments: false,
         	noImplicitAny: false
         };
 
         // Source files.
-        var srcFiles = [
+        let srcFiles = [
             '!' + srcPath.ts + '**/backup.ts',
             srcPath.ts + '**/*.ts'
         ];
 
         // Output file.
-        var outputFile = 'pl-modal.ts';
+        let outputFile = 'pl-modal.min.ts';
 
         return gulp.src(srcFiles)
             .pipe(concat(outputFile))
             .pipe(typescript(opts))
+            .pipe(uglify())
             .pipe(gulp.dest(destPath.js));
     });
 

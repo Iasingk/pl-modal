@@ -6,55 +6,55 @@ module pl {
          * Overlay element.
          * @type {HTMLElement}
          */
-        private _overlay:HTMLElement;
+        private _overlay: HTMLElement;
 
         /**
          * Modal element.
          * @type {HTMLElement}
          */
-        private _modal:HTMLElement;
+        private _modal: HTMLElement;
 
         /**
          * Modal content.
          * @type {HTMLElement}
          */
-        private _content:HTMLElement;
+        private _content: HTMLElement;
 
         /**
          * Close button element.
          * @type {HTMLElement}
          */
-        private _closeButton:HTMLElement;
+        private _closeButton: HTMLElement;
 
         /**
          * Flag that indicate if the modal is open or not.
          * @type {boolean}
          */
-        private _isOpen:boolean = false;
+        private _isOpen: boolean = false;
 
         /**
-         * Modal close event.
-         * @type {PLEvent}
+         * Modal closed event.
+         * @type {Event}
          */
-        private _modalClose:PLEvent;
+        private _closed: Event;
 
         /**
-         * Modal open event.
-         * @type {PLEvent}
+         * Modal opened event.
+         * @type {Event}
          */
-        private _modalOpen:PLEvent;
+        private _opened: Event;
 
         /**
          * Modal settings
          * @type {object}
          */
-        private _settings:Object;
+        private _settings: Object;
 
         /**
          * Transitionend name.
          * @type {string}
          */
-        private _transitionend:string;
+        private _transitionend: string;
 
         /**
          * Get transitionend event depending of the browser.
@@ -171,22 +171,22 @@ module pl {
         }
 
         /**
-         * Fires when modal open.
+         * Fires when modal is opened.
          */
-        private onModalOpen() {
-            if (this._modalOpen) {
-                this._modalOpen.fire();
+        private onOpened() {
+            if (this._opened) {
+                this._opened.fire();
             }
 
             this._isOpen = true;
         }
 
         /**
-         * Fires when modal closes.
+         * Fires when modal is closed.
          */
-        private onModalClose() {
-            if (this._modalClose) {
-                this._modalClose.fire();
+        private onClosed() {
+            if (this._closed) {
+                this._closed.fire();
             }
 
             this.removeFromDom();
@@ -211,7 +211,7 @@ module pl {
          */
         private toggleTransitionend(ev: TransitionEvent) {
             let content = this._content,
-                functionToCall = this._isOpen ? this.onModalClose : this.onModalOpen;
+                functionToCall = this._isOpen ? this.onClosed : this.onOpened;
 
             content.removeEventListener(this._transitionend, this.toggleTransitionend);
             functionToCall.call(this);
@@ -231,33 +231,33 @@ module pl {
             let overlay = this._overlay;
             let modal = this._modal;
 
-            overlay.className = overlay.className.replace(/(\s+)?modal-open/, '');
-            modal.className = modal.className.replace(/(\s+)?modal-open/, '');
+            overlay.className = overlay.className.replace(/\s+?modal-open/, '');
+            modal.className = modal.className.replace(/\s+?modal-open/, '');
 
         }
 
         /**
-         * Get modal close event.
-         * @return {PLEvent}
+         * Get modal closed event.
+         * @return {Event}
          */
-        public get modalClose() {
-            if (!this._modalClose) {
-                this._modalClose = new PLEvent();
+        public get closed() {
+            if (!this._closed) {
+                this._closed = new Event();
             }
 
-            return this._modalClose;
+            return this._closed;
         }
 
         /**
-         * Get modal open event.
-         * @return {PLEvent}
+         * Get modal opened event.
+         * @return {Event}
          */
-        public get modalOpen() {
-            if (!this._modalOpen) {
-                this._modalOpen = new PLEvent();
+        public get opened() {
+            if (!this._opened) {
+                this._opened = new Event();
             }
 
-            return this._modalOpen;
+            return this._opened;
         }
 
         /**

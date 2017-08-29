@@ -1,6 +1,6 @@
 module pl {
 	
-	export class PLEvent {
+	export class Event {
 		
 		/**
 		 * @type {Array<function>}
@@ -13,7 +13,7 @@ module pl {
 		private _scope: any;
 
 		/**
-		 * Create a PLEvent instance.
+		 * Create a Event instance.
 		 * @constructor
 		 */
 		constructor() {
