@@ -1,31 +1,31 @@
 (function() {
 	'use strict';
 
-	const gulp       = require('gulp'),
-		  concat     = require('gulp-concat'),
-		  typescript = require('gulp-typescript'),
-          uglify     = require('gulp-uglify'),
-		  livereload = require('gulp-livereload');
+    let gulp       = require('gulp'),
+        concat     = require('gulp-concat'),
+        typescript = require('gulp-typescript'),
+        uglify     = require('gulp-uglify'),
+        livereload = require('gulp-livereload');
 
 
-	const srcPath = {
+    let srcPath = {
         css : 'styles/',
         ts  : 'scripts/ts/',
         root: ''
     };
 
-    const destPath = {
-        js  : 'scripts/js/'
+    let destPath = {
+        js: 'scripts/js/'
     };
 
-	// ---------------------------------------------------------------------
+    // ---------------------------------------------------------------------
     // | Maintains updated src changes in the browser.                     |
     // ---------------------------------------------------------------------
 
     /**
      * Reload on change.
      */
-    gulp.task('reload', () =>{
+    gulp.task('reload', () => {
         gulp.src(srcPath.root)
             .pipe(livereload());
     });
@@ -35,7 +35,7 @@
      * Use with livereload chrome extension.
      * Reference: https://github.com/vohof/gulp-livereload
      */
-    gulp.task('watch', () =>{
+    gulp.task('watch', () => {
         // Files to be watched.
         let files = [
             srcPath.ts   + '**/*.ts',
@@ -49,7 +49,7 @@
     });
 
 
-	// ---------------------------------------------------------------------
+    // ---------------------------------------------------------------------
     // | Build production project.                                         |
     // ---------------------------------------------------------------------
 
@@ -57,11 +57,11 @@
      * Concatenate and compile typescript files.
      * Reference: https://www.npmjs.com/package/gulp-typescript/
      */
-    gulp.task('ts', () =>{
+    gulp.task('ts', () => {
         let opts = {
-        	target: 'ES5',
-        	removeComments: false,
-        	noImplicitAny: false
+            target        : 'ES5',
+            removeComments: false,
+            noImplicitAny : false
         };
 
         // Source files.
