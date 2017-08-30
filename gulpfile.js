@@ -1,3 +1,6 @@
+/**
+ * Created by cesarmejia on 22/08/2017.
+ */
 (function() {
 	'use strict';
 
@@ -45,7 +48,7 @@
 
         livereload.listen();
 
-        gulp.watch(files, ['typescript', 'reload']);
+        gulp.watch(files, ['ts', 'reload']);
     });
 
 
