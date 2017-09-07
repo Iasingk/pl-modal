@@ -1,77 +1,3 @@
-/* Load fonts */
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200);
-
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-html,
-body {
-    height: 100%;
-    margin: 0;
-    width: 100%;
-}
-
-body {
-    background-color: #258bcd;
-    color: #fff;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 15px;
-    font-weight: 200;
-
-    -webkit-text-rendering: optimizeLegibility;
-    -moz-text-rendering: optimizeLegibility;
-    -ms-text-rendering: optimizeLegibility;
-    -o-text-rendering: optimizeLegibility;
-    text-rendering: optimizeLegibility;
-
-    -webkit-font-smoothing: antialiased;
-    -moz-font-smoothing: antialiased;
-    -ms-font-smoothing: antialiased;
-    -o-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-}
-
-body.modal-open {
-    overflow: hidden;
-
-    -webkit-filter: blur(1);
-    filter: blur(1);
-}
-
-.hidden {
-    display: none;
-    visibility: hidden;
-}
-
-/* Cover Styles */
-#cover {
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    text-align: center;
-
-    transform: translate(-50%, -50%);
-}
-
-#cover h1 {
-    font-size: 6.333em;
-    font-weight: 200;
-    margin: 0 0 .25em 0;
-}
-
-#cover button {
-    background-color: #53a9e1;
-    border: none;
-    color: #fff;
-    font-family: inherit;
-    font-size: 1.333em;
-    font-weight: 300;
-    padding: .25em 1em;
-}
-
 /* Modal Styles */
 .pl-modal-overlay {
     background-color: transparent;
@@ -85,34 +11,32 @@ body.modal-open {
     transition: background-color 375ms;
 }
 
-.pl-modal-overlay.modal-open {
+.pl-modal-overlay.pl-modal-open {
     background-color: rgba(0, 0, 0, .65);
 }
 
 .pl-modal {
     background-color: transparent;
     left: 50%;
-    opacity: 0;
     position: fixed;
     top: 50%;
+    /* visibility: hidden; */
     width: 500px;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
 
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-
-    -webkit-transition: opacity 375ms;
-    -moz-transition: opacity 375ms;
-    -ms-transition: opacity 375ms;
-    -o-transition: opacity 375ms;
-    transition: opacity 375ms;
 }
 
-.pl-modal.modal-open {
-    opacity: 1;
-}
+/* .pl-modal.pl-modal-open {
+    visibility: visible;
+} */
 
 .pl-modal-content {
     background-color: #258bcd;
@@ -136,8 +60,23 @@ body.modal-open {
 
 
 /* Modal Animations */
+/* Default Effect */
+.pl-modal .pl-modal-content {
+    opacity: 0;
+
+    -webkit-transition: opacity 375ms;
+    -moz-transition: opacity 375ms;
+    -ms-transition: opacity 375ms;
+    -o-transition: opacity 375ms;
+    transition: opacity 375ms;
+}
+
+.pl-modal.pl-modal-open .pl-modal-content {
+    opacity: 1;
+}
+
 /* Effect 1: Fade in and scale up */
-.pl-modal.effect-1 .pl-modal-content {
+.pl-modal.pl-effect-1 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform: scale(0.7);
@@ -152,7 +91,7 @@ body.modal-open {
     transition: opacity 375ms, transform 375ms;
 }
 
-.pl-modal.effect-1.modal-open .pl-modal-content {
+.pl-modal.pl-effect-1.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: scale(1);
@@ -163,7 +102,7 @@ body.modal-open {
 }
 
 /* Effect 2: Slide from the right */
-.pl-modal.effect-2 .pl-modal-content {
+.pl-modal.pl-effect-2 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform: translateX(20%);
@@ -178,7 +117,7 @@ body.modal-open {
     transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
 }
 
-.pl-modal.effect-2.modal-open .pl-modal-content {
+.pl-modal.pl-effect-2.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: translateX(0);
@@ -189,7 +128,7 @@ body.modal-open {
 }
 
 /* Effect 3: Slide from the bottom */
-.pl-modal.effect-3 .pl-modal-content {
+.pl-modal.pl-effect-3 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform: translateY(20%);
@@ -204,7 +143,7 @@ body.modal-open {
     transition: all 0.3s;
 }
 
-.pl-modal.effect-3.modal-open .pl-modal-content {
+.pl-modal.pl-effect-3.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: translateY(0);
@@ -215,7 +154,7 @@ body.modal-open {
 }
 
 /* Effect 4: Newspaper */
-.pl-modal.effect-4 .pl-modal-content {
+.pl-modal.pl-effect-4 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform: scale(0) rotate(720deg);
@@ -230,7 +169,7 @@ body.modal-open {
     transition: all 0.5s;
 }
 
-.pl-modal.effect-4.modal-open .pl-modal-content {
+.pl-modal.pl-effect-4.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: scale(1) rotate(0deg);
@@ -241,13 +180,13 @@ body.modal-open {
 }
 
 /* Effect 5: Fall */
-.pl-modal.effect-5 {
+.pl-modal.pl-effect-5 {
     -webkit-perspective: 1300px;
     -moz-perspective: 1300px;
     perspective: 1300px;
 }
 
-.pl-modal.effect-5 .pl-modal-content {
+.pl-modal.pl-effect-5 .pl-modal-content {
     opacity: 0;
 
     -webkit-transition: all 0.3s ease-in;
@@ -266,7 +205,7 @@ body.modal-open {
     transform: translateZ(600px) rotateX(20deg);
 }
 
-.pl-modal.effect-5.modal-open .pl-modal-content {
+.pl-modal.pl-effect-5.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: translateZ(0px) rotateX(0deg);
@@ -277,13 +216,13 @@ body.modal-open {
 }
 
 /* Effect 6: Side fall */
-.pl-modal.effect-6 {
+.pl-modal.pl-effect-6 {
     -webkit-perspective: 1300px;
     -moz-perspective: 1300px;
     perspective: 1300px;
 }
 
-.pl-modal.effect-6 .pl-modal-content {
+.pl-modal.pl-effect-6 .pl-modal-content {
     opacity: 0;
 
     -webkit-transition: all 0.3s ease-in;
@@ -304,7 +243,7 @@ body.modal-open {
     transform-style: preserve-3d;
 }
 
-.pl-modal.effect-6.modal-open .pl-modal-content {
+.pl-modal.pl-effect-6.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: translate(0%) translateZ(0) rotate(0deg);
@@ -315,7 +254,7 @@ body.modal-open {
 }
 
 /* Effect 7: Slide and stick to top */
-.pl-modal.effect-7 {
+.pl-modal.pl-effect-7 {
     top: 0;
 
     -webkit-transform: translateX(-50%);
@@ -325,7 +264,7 @@ body.modal-open {
     transform: translateX(-50%);
 }
 
-.pl-modal.effect-7 .pl-modal-content {
+.pl-modal.pl-effect-7 .pl-modal-content {
     border-radius: 0 0 3px 3px;
     opacity: 0;
 
@@ -341,7 +280,7 @@ body.modal-open {
     transition: all .3s;
 }
 
-.pl-modal.effect-7.modal-open .pl-modal-content {
+.pl-modal.pl-effect-7.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: translateY(0%);
@@ -352,13 +291,13 @@ body.modal-open {
 }
 
 /* Effect 8: 3D flip horizontal */
-.pl-modal.effect-8 {
+.pl-modal.pl-effect-8 {
     -webkit-perspective: 1300px;
     -moz-perspective: 1300px;
     perspective: 1300px;
 }
 
-.pl-modal.effect-8 .pl-modal-content {
+.pl-modal.pl-effect-8 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform-style: preserve-3d;
@@ -379,7 +318,7 @@ body.modal-open {
     transition: all 0.3s;
 }
 
-.pl-modal.effect-8.modal-open .pl-modal-content {
+.pl-modal.pl-effect-8.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: rotateY(0deg);
@@ -390,13 +329,13 @@ body.modal-open {
 }
 
 /* Effect 9: 3D flip vertical */
-.pl-modal.effect-9 {
+.pl-modal.pl-effect-9 {
     -webkit-perspective: 1300px;
     -moz-perspective: 1300px;
     perspective: 1300px;
 }
 
-.pl-modal.effect-9 .pl-modal-content {
+.pl-modal.pl-effect-9 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform-style: preserve-3d;
@@ -417,7 +356,7 @@ body.modal-open {
     transition: all 0.3s;
 }
 
-.pl-modal.effect-9.modal-open .pl-modal-content {
+.pl-modal.pl-effect-9.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: rotateX(0deg);
@@ -428,13 +367,13 @@ body.modal-open {
 }
 
 /* Effect 10: 3D sign */
-.pl-modal.effect-10 {
+.pl-modal.pl-effect-10 {
     -webkit-perspective: 1300px;
     -moz-perspective: 1300px;
     perspective: 1300px;
 }
 
-.pl-modal.effect-10 .pl-modal-content {
+.pl-modal.pl-effect-10 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform-style: preserve-3d;
@@ -457,7 +396,7 @@ body.modal-open {
     transition: all 0.3s;
 }
 
-.pl-modal.effect-10.modal-open .pl-modal-content {
+.pl-modal.pl-effect-10.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: rotateX(0deg);
@@ -468,7 +407,7 @@ body.modal-open {
 }
 
 /* Effect 11: Super scaled */
-.pl-modal.effect-11 .pl-modal-content {
+.pl-modal.pl-effect-11 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform: scale(2);
@@ -483,7 +422,7 @@ body.modal-open {
     transition: all 0.3s;
 }
 
-.pl-modal.effect-11.modal-open .pl-modal-content {
+.pl-modal.pl-effect-11.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: scale(1);
@@ -494,13 +433,13 @@ body.modal-open {
 }
 
 /* Effect 12: 3D Rotate from bottom */
-.pl-modal.effect-12 {
+.pl-modal.pl-effect-12 {
     -webkit-perspective: 1300px;
     -moz-perspective: 1300px;
     perspective: 1300px;
 }
 
-.pl-modal.effect-12 .pl-modal-content {
+.pl-modal.pl-effect-12 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform-style: preserve-3d;
@@ -525,7 +464,7 @@ body.modal-open {
     transition: all 0.3s ease-out;
 }
 
-.pl-modal.effect-12.modal-open .pl-modal-content {
+.pl-modal.pl-effect-12.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: translateY(0%) rotateX(0deg);
@@ -536,13 +475,13 @@ body.modal-open {
 }
 
 /* Effect 13: 3D Rotate in from left */
-.pl-modal.effect-13 {
+.pl-modal.pl-effect-13 {
     -webkit-perspective: 1300px;
     -moz-perspective: 1300px;
     perspective: 1300px;
 }
 
-.pl-modal.effect-13 .pl-modal-content {
+.pl-modal.pl-effect-13 .pl-modal-content {
     opacity: 0;
 
     -webkit-transform-style: preserve-3d;
@@ -567,7 +506,7 @@ body.modal-open {
     transition: all 0.3s;
 }
 
-.pl-modal.effect-13.modal-open .pl-modal-content {
+.pl-modal.pl-effect-13.pl-modal-open .pl-modal-content {
     opacity: 1;
 
     -webkit-transform: translateZ(0px) translateX(0%) rotateY(0deg);
@@ -576,27 +515,6 @@ body.modal-open {
     -o-transform: translateZ(0px) translateX(0%) rotateY(0deg);
     transform: translateZ(0px) translateX(0%) rotateY(0deg);
 }
-
-
-/* Dummy Template */
-.dummy-template h3 {
-    background-color: #53a9e1;
-    font-size: 45px;
-    font-weight: 300;
-    margin: 0;
-    padding: 10px;
-    text-align: center;
-}
-
-.dummy-template strong {
-    font-weight: 400;
-}
-
-.dummy-template > div {
-    font-size: 16px;
-    padding: 35px 30px;
-}
-
 
 @media (max-width: 767px) {
 

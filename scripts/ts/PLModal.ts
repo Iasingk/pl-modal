@@ -101,8 +101,8 @@ module pl {
         constructor(settings: Object) {
             // Define default options.
             let defaults = {
-                className: '',
-                avoidClose: true
+                effectName: '',
+                avoidClose: false
             };
 
             // Create settings by extending defaults with passed
@@ -126,7 +126,7 @@ module pl {
 
             // Create modal element.
             this._modal = document.createElement('div');
-            this._modal.className = 'pl-modal' + ' ' + this._settings['className'];
+            this._modal.className = 'pl-modal' + ' ' + this._settings['effectName'];
 
             // Create modal content.
             this._content = document.createElement('div');
@@ -134,7 +134,7 @@ module pl {
             this._modal.appendChild(this._content);
 
             // Create close button element.
-            if (this._settings['avoidClose']) {
+            if (!this._settings['avoidClose']) {
                 this._closeButton = document.createElement('div');
                 this._closeButton.className = 'pl-modal-close-button';
                 this._content.appendChild(this._closeButton);
@@ -146,7 +146,7 @@ module pl {
          * Attach handlers to modal elements.
          */
         private initializeEvents() {
-            if (this._settings['avoidClose']) {
+            if (!this._settings['avoidClose']) {
                 let ESC_KEY = 27;
 
                 // Close modal if user press esc key.
@@ -223,16 +223,29 @@ module pl {
         }
 
         /**
+         * Change effect from modal.
+         * @param {string} effectName
+         */
+        public changeEffect(effectName: string) {
+            this._settings['effectName'] = effectName;
+            this._modal.className = 'pl-modal' + ' ' + this._settings['effectName'];
+        }
+
+        /**
          * Close modal and remove from DOM.
          */
         public close() {
             if (!this._isOpen) return;
 
+            let body = document.body;
             let overlay = this._overlay;
             let modal = this._modal;
 
-            overlay.className = overlay.className.replace(/\s+?modal-open/, '');
-            modal.className = modal.className.replace(/\s+?modal-open/, '');
+            // Let scroll in body
+            body.className = body.className.replace(/\s?\bno-scroll\b/g, '');
+
+            overlay.className = overlay.className.replace(/\s?\bpl-modal-open\b/g, '');
+            modal.className = modal.className.replace(/\s?\bpl-modal-open\b/g, '');
 
         }
 
@@ -277,13 +290,16 @@ module pl {
             body.appendChild(overlay);
             body.appendChild(modal);
 
+            // Avoid scroll in void since modal is open.
+            body.className += 'no-scroll';
+
             // Force the browser to recognize the elements that we just added.
             window.getComputedStyle(overlay).backgroundColor;
             window.getComputedStyle(modal).opacity;
             window.getComputedStyle(content).opacity;
 
-            overlay.className += ' modal-open';
-            modal.className += ' modal-open';
+            overlay.className += ' pl-modal-open';
+            modal.className += ' pl-modal-open';
 
         }
 
@@ -296,7 +312,9 @@ module pl {
 
             // Empty content element.
             content.innerHTML = '';
-            content.appendChild(this._closeButton);
+
+            if (!this._settings['avoidClose'])
+                content.appendChild(this._closeButton);
 
             if ("string" === typeof element)
                 content.appendChild(document.createTextNode(element));

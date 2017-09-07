@@ -1,0 +1,90 @@
+/* Load fonts */
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200);
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    width: 100%;
+}
+
+body {
+    background-color: #258bcd;
+    color: #fff;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 15px;
+    font-weight: 200;
+
+    -webkit-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -ms-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+}
+
+body.no-scroll {
+    overflow: hidden;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+/* Cover Styles */
+#cover {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    text-align: center;
+
+    transform: translate(-50%, -50%);
+}
+
+#cover h1 {
+    font-size: 6.333em;
+    font-weight: 200;
+    margin: 0 0 .25em 0;
+}
+
+#cover button {
+    background-color: #53a9e1;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1.333em;
+    font-weight: 300;
+    padding: .25em 1em;
+}
+
+
+/* Dummy Template */
+.dummy-template h3 {
+    background-color: #53a9e1;
+    font-size: 45px;
+    font-weight: 300;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+.dummy-template strong {
+    font-weight: 400;
+}
+
+.dummy-template > div {
+    font-size: 16px;
+    padding: 35px 30px;
+}

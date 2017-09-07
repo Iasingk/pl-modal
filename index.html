@@ -7,8 +7,10 @@
 
         <title>PL Modal</title>
 
-        <!-- Include PLModal styles -->
-        <link rel="stylesheet" href="styles/styles.css">
+        <!-- Include Layout styles -->
+        <link rel="stylesheet" href="styles/layout.css">
+        <!-- Include PL Modal styles -->
+        <link rel="stylesheet" href="styles/pl-modal.css">
     </head>
     <body>
 
@@ -47,7 +49,7 @@
                 var dummyTemplate = d.querySelector('.dummy-template');
 
                 // Create modal instance.
-                var modal = new pl.Modal({ className: 'effect-11' });
+                var modal = new pl.Modal({ effectName: 'pl-effect-11' });
 
                 // Attach handlers to modal events.
                 modal.opened.add(function() { console.log('modal opened'); });
