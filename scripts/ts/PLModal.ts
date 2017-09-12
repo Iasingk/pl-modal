@@ -177,8 +177,6 @@ module pl {
             if (this._opened) {
                 this._opened.fire();
             }
-
-            this._isOpen = true;
         }
 
         /**
@@ -190,8 +188,6 @@ module pl {
             }
 
             this.removeFromDom();
-
-            this._isOpen = false;
         }
 
         /**
@@ -213,7 +209,10 @@ module pl {
             let content = this._content,
                 functionToCall = this._isOpen ? this.onClosed : this.onOpened;
 
+            // Remove transitionend handler to avoid multiple calls depending on css properties modfied.
             content.removeEventListener(this._transitionend, this.toggleTransitionend);
+
+            this._isOpen = !this._isOpen;
             functionToCall.call(this);
 
             setTimeout(() => {
