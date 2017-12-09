@@ -5,65 +5,13 @@ module pl {
 
     export class Modal {
 
-        /**
-         * Overlay element.
-         * @type {HTMLElement}
-         */
-        private _overlay: HTMLElement;
-
-        /**
-         * Modal element.
-         * @type {HTMLElement}
-         */
-        private _modal: HTMLElement;
-
-        /**
-         * Modal content.
-         * @type {HTMLElement}
-         */
-        private _content: HTMLElement;
-
-        /**
-         * Close button element.
-         * @type {HTMLElement}
-         */
-        private _closeButton: HTMLElement;
-
-        /**
-         * Flag that indicate if the modal is open or not.
-         * @type {boolean}
-         */
-        private _isOpen: boolean = false;
-
-        /**
-         * Modal closed event.
-         * @type {Event}
-         */
-        private _closed: Event;
-
-        /**
-         * Modal opened event.
-         * @type {Event}
-         */
-        private _opened: Event;
-
-        /**
-         * Modal settings
-         * @type {object}
-         */
-        private _settings: Object;
-
-        /**
-         * Transitionend name.
-         * @type {string}
-         */
-        private _transitionend: string;
+        // region Static
 
         /**
          * Get transitionend event depending of the browser.
          * @return {string}
          */
-        static transitionSelect():string {
+        static transitionSelect(): string {
             let el = document.createElement('div');
 
             let transEndEventNames = {
@@ -89,12 +37,37 @@ module pl {
             let property;
 
             for (property in settings) {
-                if (settings.hasOwnProperty(property))
+                if (settings.hasOwnProperty(property)) {
                     source[property] = settings[property];
+                }
             }
 
             return source;
         }
+
+        // endregion
+
+        // region Fields
+
+        /**
+         * Flag that indicate if the modal is open or not.
+         * @type {boolean}
+         */
+        private _isOpen: boolean = false;
+
+        /**
+         * Modal settings
+         * @type {object}
+         */
+        private _settings: Object;
+
+        /**
+         * Transitionend name.
+         * @type {string}
+         */
+        private _transitionend: string;
+
+        // endregion
 
         /**
          * Create an instance of Modal.
@@ -104,8 +77,9 @@ module pl {
         constructor(settings: Object) {
             // Define default options.
             let defaults = {
-                effectName: '',
-                avoidClose: false
+                avoidClose: false,
+                closeWithOverlay: true,
+                effectName: ''
             };
 
             // Create settings by extending defaults with passed
@@ -119,30 +93,20 @@ module pl {
             this.initializeEvents();
         }
 
+        // region Private Methods
+
         /**
          * Create modal elements.
          */
         private buildOut() {
-            // Create overlay element.
-            this._overlay = document.createElement('div');
-            this._overlay.className = 'pl-modal-overlay';
-
-            // Create modal element.
-            this._modal = document.createElement('div');
-            this._modal.className = 'pl-modal' + ' ' + this._settings['effectName'];
-
             // Create modal content.
-            this._content = document.createElement('div');
-            this._content.className = 'pl-modal-content';
-            this._modal.appendChild(this._content);
+            this.modal.appendChild(this.content);
 
             // Create close button element.
             if (!this._settings['avoidClose']) {
-                this._closeButton = document.createElement('div');
-                this._closeButton.className = 'pl-modal-close-button';
-                this._content.appendChild(this._closeButton);
+                debugger;
+                this.content.appendChild(this.closeButton);
             }
-
         }
 
         /**
@@ -158,9 +122,16 @@ module pl {
                 }, false);
 
                 // Close modal if user clicks the close button.
-                this._closeButton.addEventListener('click', ev => {
+                this.closeButton.addEventListener('click', ev => {
                     this.close();
                 }, false);
+
+                // Close modal if user clicks the overlay.
+                if (this._settings['closeWithOverlay']) {
+                    this.overlay.addEventListener('click', ev => {
+                        this.close();
+                    }, false);
+                }
             }
 
             // Bind "this" context to toggleTransition handler.
@@ -169,17 +140,129 @@ module pl {
             // Attach handler to transitionend event, when the event occurs for the first time
             // remove the event because transitionend handler will execute the same times as
             // styles modified.
-            this._content.addEventListener(this._transitionend, this.toggleTransitionend, false);
+            this.content.addEventListener(this._transitionend, this.toggleTransitionend, false);
 
         }
 
         /**
-         * Fires when modal is opened.
+         * Remove elements from DOM.
          */
-        private onOpened() {
-            if (this._opened) {
-                this._opened.fire();
+        private removeFromDom() {
+            this.overlay.parentNode.removeChild(this.overlay);
+            this.modal.parentNode.removeChild(this.modal);
+        }
+
+        /**
+         * Control the flow of transitionend handler and modal.
+         * @param {TransitionEvent} ev
+         */
+        private toggleTransitionend(ev: TransitionEvent) {
+            let functionToCall = this._isOpen ? this.onClosed : this.onOpened;
+
+            // Remove transitionend handler to avoid multiple calls depending on css properties modfied.
+            this.content.removeEventListener(this._transitionend, this.toggleTransitionend);
+
+            this._isOpen = !this._isOpen;
+            functionToCall.call(this);
+
+            setTimeout(() => {
+                this.content.addEventListener(this._transitionend, this.toggleTransitionend, false);
+            }, 50);
+        }
+
+        // endregion
+
+        // region Methods
+
+        /**
+         * Close modal and remove from DOM.
+         */
+        close() {
+            if (!this._isOpen) return;
+
+            let body = document.body;
+
+            // Let scroll in body
+            body.className = body.className.replace(/\s?\bno-scroll\b/g, '');
+
+            this.overlay.className = this.overlay.className.replace(/\s?\bpl-modal-open\b/g, '');
+            this.modal.className = this.modal.className.replace(/\s?\bpl-modal-open\b/g, '');
+        }
+
+        /**
+         * Change effect from modal.
+         * @param {string} effectName
+         */
+        changeEffect(effectName: string) {
+            this._settings['effectName'] = effectName;
+            this.modal.className = `pl-modal ${this._settings['effectName']}`;
+        }
+
+        /**
+         * Add modal to DOM and show it.
+         * @param {HTMLElement|string} element
+         */
+        open(element?) {
+            if (this._isOpen) return;
+
+            let body = document.body;
+
+            this.setContent(element);
+
+            body.appendChild(this.overlay);
+            body.appendChild(this.modal);
+
+            // Avoid scroll in void since modal is open.
+            body.className += 'no-scroll';
+
+            // Force the browser to recognize the elements that we just added.
+            window.getComputedStyle(this.overlay).backgroundColor;
+            window.getComputedStyle(this.modal).opacity;
+            window.getComputedStyle(this.content).opacity;
+
+            this.overlay.className += ' pl-modal-open';
+            this.modal.className += ' pl-modal-open';
+        }
+
+        /**
+         * Set modal content.
+         * @param {HTMLElement|string} element
+         */
+        setContent(element: any = "") {
+            // Empty content element.
+            this.content.innerHTML = '';
+
+            if (!this._settings['avoidClose']) {
+                this.content.appendChild(this.closeButton);
             }
+
+            if ("string" === typeof element) {
+                this.content.appendChild(document.createTextNode(element));
+            } else {
+                this.content.appendChild(element);
+            }
+        }
+
+        // endregion
+
+        // region Events
+
+        /**
+         * Modal closed event.
+         * @type {Event}
+         */
+        private _closed: Event;
+
+        /**
+         * Get modal closed event.
+         * @return {Event}
+         */
+        get closed() {
+            if (!this._closed) {
+                this._closed = new Event();
+            }
+
+            return this._closed;
         }
 
         /**
@@ -194,80 +277,16 @@ module pl {
         }
 
         /**
-         * Remove elements from DOM.
+         * Modal opened event.
+         * @type {Event}
          */
-        private removeFromDom() {
-            let overlay = this._overlay;
-            let modal = this._modal;
-
-            overlay.parentNode.removeChild(overlay);
-            modal.parentNode.removeChild(modal);
-        }
-
-        /**
-         * Control the flow of transitionend handler and modal.
-         * @param {TransitionEvent} ev
-         */
-        private toggleTransitionend(ev: TransitionEvent) {
-            let content = this._content,
-                functionToCall = this._isOpen ? this.onClosed : this.onOpened;
-
-            // Remove transitionend handler to avoid multiple calls depending on css properties modfied.
-            content.removeEventListener(this._transitionend, this.toggleTransitionend);
-
-            this._isOpen = !this._isOpen;
-            functionToCall.call(this);
-
-            setTimeout(() => {
-                content.addEventListener(this._transitionend, this.toggleTransitionend, false);
-            }, 50);
-
-        }
-
-        /**
-         * Change effect from modal.
-         * @param {string} effectName
-         */
-        public changeEffect(effectName: string) {
-            this._settings['effectName'] = effectName;
-            this._modal.className = 'pl-modal' + ' ' + this._settings['effectName'];
-        }
-
-        /**
-         * Close modal and remove from DOM.
-         */
-        public close() {
-            if (!this._isOpen) return;
-
-            let body = document.body;
-            let overlay = this._overlay;
-            let modal = this._modal;
-
-            // Let scroll in body
-            body.className = body.className.replace(/\s?\bno-scroll\b/g, '');
-
-            overlay.className = overlay.className.replace(/\s?\bpl-modal-open\b/g, '');
-            modal.className = modal.className.replace(/\s?\bpl-modal-open\b/g, '');
-
-        }
-
-        /**
-         * Get modal closed event.
-         * @return {Event}
-         */
-        public get closed() {
-            if (!this._closed) {
-                this._closed = new Event();
-            }
-
-            return this._closed;
-        }
+        private _opened: Event;
 
         /**
          * Get modal opened event.
          * @return {Event}
          */
-        public get opened() {
+        get opened() {
             if (!this._opened) {
                 this._opened = new Event();
             }
@@ -276,54 +295,95 @@ module pl {
         }
 
         /**
-         * Add modal to DOM and show it.
-         * @param {HTMLElement|string} element
+         * Fires when modal is opened.
          */
-        public open(element?) {
-            if (this._isOpen) return;
+        private onOpened() {
+            if (this._opened) {
+                this._opened.fire();
+            }
+        }
 
-            let body = document.body;
-            let overlay = this._overlay;
-            let modal = this._modal;
-            let content = this._content;
+        // endregion
 
-            this.setContent(element);
+        // region Properties
 
-            body.appendChild(overlay);
-            body.appendChild(modal);
+        /**
+         * Overlay element.
+         * @type {HTMLElement}
+         */
+        private _overlay: HTMLElement;
 
-            // Avoid scroll in void since modal is open.
-            body.className += 'no-scroll';
+        /**
+         * Get overlay element.
+         * @returns {HTMLElement}
+         */
+        get overlay(): HTMLElement {
+            if (!this._overlay) {
+                this._overlay = document.createElement('div');
+                this._overlay.className = 'pl-modal-overlay';
+            }
 
-            // Force the browser to recognize the elements that we just added.
-            window.getComputedStyle(overlay).backgroundColor;
-            window.getComputedStyle(modal).opacity;
-            window.getComputedStyle(content).opacity;
-
-            overlay.className += ' pl-modal-open';
-            modal.className += ' pl-modal-open';
-
+            return this._overlay;
         }
 
         /**
-         * Set modal content.
-         * @param {HTMLElement|string} element
+         * Modal element.
+         * @type {HTMLElement}
          */
-        public setContent(element: any = "") {
-            let content = this._content;
+        private _modal: HTMLElement;
 
-            // Empty content element.
-            content.innerHTML = '';
+        /**
+         * Get modal element.
+         * @returns {HTMLElement}
+         */
+        get modal(): HTMLElement {
+            if (!this._modal) {
+                this._modal = document.createElement('div');
+                this._modal.className = `pl-modal ${this._settings['effectName']}`;
+            }
 
-            if (!this._settings['avoidClose'])
-                content.appendChild(this._closeButton);
-
-            if ("string" === typeof element)
-                content.appendChild(document.createTextNode(element));
-            else
-                content.appendChild(element);
-
+            return this._modal;
         }
+
+        /**
+         * Modal content.
+         * @type {HTMLElement}
+         */
+        private _content: HTMLElement;
+
+        /**
+         * Get content element.
+         * @returns {HTMLElement}
+         */
+        get content(): HTMLElement {
+            if (!this._content) {
+                this._content = document.createElement('div');
+                this._content.className = 'pl-modal-content';
+            }
+
+            return this._content;
+        }
+
+        /**
+         * Close button element.
+         * @type {HTMLElement}
+         */
+        private _closeButton: HTMLElement;
+
+        /**
+         * Get close button element.
+         * @returns {HTMLElement}
+         */
+        get closeButton(): HTMLElement {
+            if (!this._closeButton) {
+                this._closeButton = document.createElement('div');
+                this._closeButton.className = 'pl-modal-close-button';
+            }
+
+            return this._closeButton;
+        }
+
+        // endregion
 
     }
 

@@ -38,11 +38,6 @@
     visibility: visible;
 } */
 
-.pl-modal-content {
-    background-color: #258bcd;
-    color: #fff;
-}
-
 .pl-modal-close-button {
     cursor: pointer;
     position: absolute;

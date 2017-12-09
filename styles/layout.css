@@ -71,6 +71,11 @@ body.no-scroll {
 
 
 /* Dummy Template */
+.dummy-template {
+    background-color: #258bcd;
+    color: #fff;
+}
+
 .dummy-template h3 {
     background-color: #53a9e1;
     font-size: 45px;
