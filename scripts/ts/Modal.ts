@@ -78,7 +78,7 @@ module pl {
             // Define default options.
             let defaults = {
                 avoidClose: false,
-                closeWithOverlay: true,
+                closeWithOverlay: false,
                 effectName: ''
             };
 
