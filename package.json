@@ -13,6 +13,7 @@
     "gulp-stylus": "^2.6.0",
     "gulp-typescript": "^3.2.3",
     "gulp-uglify": "^3.0.0",
+    "gulp-uglifycss": "^1.0.9",
     "typescript": "^2.6.2"
   },
   "scripts": {

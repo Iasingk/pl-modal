@@ -4,6 +4,7 @@
 const gulp         = require('gulp');
 const concat       = require('gulp-concat');
 const stylus       = require('gulp-stylus');
+const uglifycss    = require('gulp-uglifycss');
 const typescript   = require('gulp-typescript');
 const uglify       = require('gulp-uglify');
 const plumber      = require('gulp-plumber');
@@ -71,13 +72,14 @@ gulp.task('stylus', () => {
     };
 
     // Output file.
-    let outputFile = 'styles.css';
+    let outputFile = 'pl-modal.min.css';
 
     return gulp.src(srcFiles)
         .pipe(plumber())
         .pipe(stylus())
         .pipe(concat(outputFile))
         .pipe(autoprefixer(autoPrefixerOpts))
+        .pipe(uglifycss())
         .pipe(gulp.dest(destPath.css));
 });
 

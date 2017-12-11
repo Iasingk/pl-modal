@@ -10,7 +10,7 @@ let settings = {
 	effectName: 'pl-effect-4'
 };
 
-let modal = new pl.Modal();
+let modal = new pl.Modal(settings);
 ```
 
 Use `settings` to personalize the modal instance.
