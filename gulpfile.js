@@ -50,7 +50,7 @@ gulp.task('watch', () => {
 
     livereload.listen();
 
-    gulp.watch(files, ['ts', 'reload']);
+    gulp.watch(files, ['reload']);
 });
 
 

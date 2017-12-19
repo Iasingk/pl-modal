@@ -4,7 +4,9 @@
 module pl {
 	
 	export class Event {
-		
+
+		// region Fields
+
 		/**
 		 * @type {Array<function>}
 		 */
@@ -15,6 +17,8 @@ module pl {
 		 */
 		private _scope: any;
 
+		// endregion
+
 		/**
 		 * Create a Event instance.
 		 * @constructor
@@ -23,6 +27,8 @@ module pl {
 			this._handlers = [];
 			this._scope    = this || window;
 		}
+
+		// region Methods
 
 		/**
 		 * Add new handler.
@@ -55,6 +61,8 @@ module pl {
 					return fn;
 			});
 		}
+
+		// endregion
 
 	}
 
