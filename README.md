@@ -11,6 +11,9 @@ let settings = {
 };
 
 let modal = new pl.Modal(settings);
+let element = document.getElementById('element');
+
+modal.open(element);
 ```
 
 Use `settings` to personalize the modal instance.
