@@ -248,6 +248,30 @@ module pl {
         // region Events
 
         /**
+         * Fires when modal is closed.
+         */
+        private onClosed() {
+            if (this._closed) {
+                this._closed.fire();
+            }
+
+            this.removeFromDom();
+        }
+
+        /**
+         * Fires when modal is opened.
+         */
+        private onOpened() {
+            if (this._opened) {
+                this._opened.fire();
+            }
+        }
+
+        // endregion
+
+        // region Properties
+
+        /**
          * Modal closed event.
          * @type {Event}
          */
@@ -263,17 +287,6 @@ module pl {
             }
 
             return this._closed;
-        }
-
-        /**
-         * Fires when modal is closed.
-         */
-        private onClosed() {
-            if (this._closed) {
-                this._closed.fire();
-            }
-
-            this.removeFromDom();
         }
 
         /**
@@ -293,19 +306,6 @@ module pl {
 
             return this._opened;
         }
-
-        /**
-         * Fires when modal is opened.
-         */
-        private onOpened() {
-            if (this._opened) {
-                this._opened.fire();
-            }
-        }
-
-        // endregion
-
-        // region Properties
 
         /**
          * Overlay element.
