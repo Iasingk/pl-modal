@@ -104,7 +104,6 @@ module pl {
 
             // Create close button element.
             if (!this._settings['avoidClose']) {
-                debugger;
                 this.content.appendChild(this.closeButton);
             }
         }
@@ -273,17 +272,17 @@ module pl {
 
         /**
          * Modal closed event.
-         * @type {Event}
+         * @type {pl.PLEvent}
          */
-        private _closed: Event;
+        private _closed: PLEvent;
 
         /**
          * Get modal closed event.
-         * @return {Event}
+         * @return {pl.PLEvent}
          */
         get closed() {
             if (!this._closed) {
-                this._closed = new Event();
+                this._closed = new PLEvent();
             }
 
             return this._closed;
@@ -291,17 +290,17 @@ module pl {
 
         /**
          * Modal opened event.
-         * @type {Event}
+         * @type {pl.PLEvent}
          */
-        private _opened: Event;
+        private _opened: PLEvent;
 
         /**
          * Get modal opened event.
-         * @return {Event}
+         * @return {pl.PLEvent}
          */
         get opened() {
             if (!this._opened) {
-                this._opened = new Event();
+                this._opened = new PLEvent();
             }
 
             return this._opened;

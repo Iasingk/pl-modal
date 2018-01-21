@@ -101,6 +101,7 @@ gulp.task('ts', () => {
 
     // Output file.
     let outputFile = 'pl-modal.min.ts';
+    // let outputFile = 'pl-modal.ts';
 
     return gulp.src(srcFiles)
         .pipe(plumber())

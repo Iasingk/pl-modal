@@ -3,7 +3,7 @@
  */
 module pl {
 	
-	export class Event {
+	export class PLEvent {
 
 		// region Fields
 

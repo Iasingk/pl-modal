@@ -3,53 +3,7 @@
  */
 var pl;
 (function (pl) {
-    var Event = (function () {
-        /**
-         * Create a Event instance.
-         * @constructor
-         */
-        function Event() {
-            this._handlers = [];
-            this._scope = this || window;
-        }
-        /**
-         * Add new handler.
-         * @param {function} handler
-         */
-        Event.prototype.add = function (handler) {
-            if (handler) {
-                this._handlers.push(handler);
-            }
-        };
-        /**
-         * Excecute all suscribed handlers.
-         */
-        Event.prototype.fire = function () {
-            var _this = this;
-            var args = arguments;
-            this._handlers.forEach(function (handler) {
-                handler.apply(_this._scope, args);
-            });
-        };
-        /**
-         * Remove handler from handlers.
-         * @param {function} handler
-         */
-        Event.prototype.remove = function (handler) {
-            this._handlers = this._handlers.filter(function (fn) {
-                if (fn != handler)
-                    return fn;
-            });
-        };
-        return Event;
-    }());
-    pl.Event = Event;
-})(pl || (pl = {}));
-/**
- * Created by cesarmejia on 20/08/2017.
- */
-(function (pl) {
-    var Modal = (function () {
+    var Modal = /** @class */ (function () {
         // endregion
         /**
          * Create an instance of Modal.
@@ -67,7 +21,7 @@ var pl;
             // Define default options.
             var defaults = {
                 avoidClose: false,
-                closeWithOverlay: true,
+                closeWithOverlay: false,
                 effectName: ''
             };
             // Create settings by extending defaults with passed
@@ -121,7 +75,6 @@ var pl;
             this.modal.appendChild(this.content);
             // Create close button element.
             if (!this._settings['avoidClose']) {
-                debugger;
                 this.content.appendChild(this.closeButton);
             }
         };
@@ -237,20 +190,8 @@ var pl;
                 this.content.appendChild(element);
             }
         };
-        Object.defineProperty(Modal.prototype, "closed", {
-            /**
-             * Get modal closed event.
-             * @return {Event}
-             */
-            get: function () {
-                if (!this._closed) {
-                    this._closed = new pl.Event();
-                }
-                return this._closed;
-            },
-            enumerable: true,
-            configurable: true
-        });
+        // endregion
+        // region Events
         /**
          * Fires when modal is closed.
          */
@@ -260,20 +201,6 @@ var pl;
             }
             this.removeFromDom();
         };
-        Object.defineProperty(Modal.prototype, "opened", {
-            /**
-             * Get modal opened event.
-             * @return {Event}
-             */
-            get: function () {
-                if (!this._opened) {
-                    this._opened = new pl.Event();
-                }
-                return this._opened;
-            },
-            enumerable: true,
-            configurable: true
-        });
         /**
          * Fires when modal is opened.
          */
@@ -282,6 +209,34 @@ var pl;
                 this._opened.fire();
             }
         };
+        Object.defineProperty(Modal.prototype, "closed", {
+            /**
+             * Get modal closed event.
+             * @return {pl.PLEvent}
+             */
+            get: function () {
+                if (!this._closed) {
+                    this._closed = new pl.PLEvent();
+                }
+                return this._closed;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Modal.prototype, "opened", {
+            /**
+             * Get modal opened event.
+             * @return {pl.PLEvent}
+             */
+            get: function () {
+                if (!this._opened) {
+                    this._opened = new pl.PLEvent();
+                }
+                return this._opened;
+            },
+            enumerable: true,
+            configurable: true
+        });
         Object.defineProperty(Modal.prototype, "overlay", {
             /**
              * Get overlay element.
@@ -345,4 +300,52 @@ var pl;
         return Modal;
     }());
     pl.Modal = Modal;
+})(pl || (pl = {}));
+/**
+ * Created by cesarmejia on 20/08/2017.
+ */
+(function (pl) {
+    var PLEvent = /** @class */ (function () {
+        // endregion
+        /**
+         * Create a Event instance.
+         * @constructor
+         */
+        function PLEvent() {
+            this._handlers = [];
+            this._scope = this || window;
+        }
+        // region Methods
+        /**
+         * Add new handler.
+         * @param {function} handler
+         */
+        PLEvent.prototype.add = function (handler) {
+            if (handler) {
+                this._handlers.push(handler);
+            }
+        };
+        /**
+         * Excecute all suscribed handlers.
+         */
+        PLEvent.prototype.fire = function () {
+            var _this = this;
+            var args = arguments;
+            this._handlers.forEach(function (handler) {
+                handler.apply(_this._scope, args);
+            });
+        };
+        /**
+         * Remove handler from handlers.
+         * @param {function} handler
+         */
+        PLEvent.prototype.remove = function (handler) {
+            this._handlers = this._handlers.filter(function (fn) {
+                if (fn != handler)
+                    return fn;
+            });
+        };
+        return PLEvent;
+    }());
+    pl.PLEvent = PLEvent;
 })(pl || (pl = {}));

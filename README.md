@@ -55,6 +55,37 @@ modal.opened.add(() => { /* ... */ });
 modal.closed.add(() => { /* ... */ });
 ```
 
+### Create your own effect
+To create your own effect you need to create two CSS styles that will be applied to the `.pl-modal-content` element. The first style represents the initial state of the modal with the properties that will be affected and the second represents the open state of the modal, the transition property of CSS3 will take care of the magic.
+Here is how to assign the initial state to the element `.pl-modal-content`:
+
+```css
+/* Initial state of "custom-effect" */
+.custom-effect .pl-modal-content {
+    opacity: 0;
+    
+    -webkit-transition: opacity 375ms; 
+    transition: opacity 375ms;
+}
+```
+
+
+To declare the open state to the modal, the `.pl-modal-open` class will be added to the declaration of our custom style and it must be a parent node of the `.pl-modal-content` element as shown below:
+```css
+/* Open state of "custom-effect" */
+.custom-effect.pl-modal-open .pl-modal-content {
+    opacity: 1;
+}
+```
+
+**Let's call our new custom effect.**
+To call our new custom effect we need create an instance of `pl.Modal` and set the name of our effect in the variable `effectName` in the `settings` object that we passed to the constructor as shown below:
+
+```javascript
+/* Call our new custom effect */
+let modal = new pl.Modal({ effectName: 'custom-effect' });
+```
+
 ### Static Methods
 <table>
     <tr>
