@@ -20,7 +20,7 @@ module pl {
 		// endregion
 
 		/**
-		 * Create a Event instance.
+		 * Create a PLEvent instance.
 		 * @constructor
 		 */
 		constructor() {
