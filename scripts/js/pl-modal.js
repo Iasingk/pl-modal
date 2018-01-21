@@ -3,6 +3,54 @@
  */
 var pl;
 (function (pl) {
+    var PLEvent = /** @class */ (function () {
+        // endregion
+        /**
+         * Create a PLEvent instance.
+         * @constructor
+         */
+        function PLEvent() {
+            this._handlers = [];
+            this._scope = this || window;
+        }
+        // region Methods
+        /**
+         * Add new handler.
+         * @param {function} handler
+         */
+        PLEvent.prototype.add = function (handler) {
+            if (handler) {
+                this._handlers.push(handler);
+            }
+        };
+        /**
+         * Excecute all suscribed handlers.
+         */
+        PLEvent.prototype.fire = function () {
+            var _this = this;
+            var args = arguments;
+            this._handlers.forEach(function (handler) {
+                handler.apply(_this._scope, args);
+            });
+        };
+        /**
+         * Remove handler from handlers.
+         * @param {function} handler
+         */
+        PLEvent.prototype.remove = function (handler) {
+            this._handlers = this._handlers.filter(function (fn) {
+                if (fn != handler)
+                    return fn;
+            });
+        };
+        return PLEvent;
+    }());
+    pl.PLEvent = PLEvent;
+})(pl || (pl = {}));
+/**
+ * Created by cesarmejia on 20/08/2017.
+ */
+(function (pl) {
     var Modal = /** @class */ (function () {
         // endregion
         /**
@@ -300,52 +348,4 @@ var pl;
         return Modal;
     }());
     pl.Modal = Modal;
-})(pl || (pl = {}));
-/**
- * Created by cesarmejia on 20/08/2017.
- */
-(function (pl) {
-    var PLEvent = /** @class */ (function () {
-        // endregion
-        /**
-         * Create a Event instance.
-         * @constructor
-         */
-        function PLEvent() {
-            this._handlers = [];
-            this._scope = this || window;
-        }
-        // region Methods
-        /**
-         * Add new handler.
-         * @param {function} handler
-         */
-        PLEvent.prototype.add = function (handler) {
-            if (handler) {
-                this._handlers.push(handler);
-            }
-        };
-        /**
-         * Excecute all suscribed handlers.
-         */
-        PLEvent.prototype.fire = function () {
-            var _this = this;
-            var args = arguments;
-            this._handlers.forEach(function (handler) {
-                handler.apply(_this._scope, args);
-            });
-        };
-        /**
-         * Remove handler from handlers.
-         * @param {function} handler
-         */
-        PLEvent.prototype.remove = function (handler) {
-            this._handlers = this._handlers.filter(function (fn) {
-                if (fn != handler)
-                    return fn;
-            });
-        };
-        return PLEvent;
-    }());
-    pl.PLEvent = PLEvent;
 })(pl || (pl = {}));
