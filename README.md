@@ -79,6 +79,7 @@ To declare the open state to the modal, the `.pl-modal-open` class will be added
 ```
 
 **Let's call our new custom effect.**
+
 To call our new custom effect we need create an instance of `pl.Modal` and set the name of our effect in the variable `effectName` in the `settings` object that we passed to the constructor as shown below:
 
 ```javascript
