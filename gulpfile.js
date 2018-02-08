@@ -97,6 +97,7 @@ gulp.task('ts', () => {
     // Source files.
     let srcFiles = [
         `${srcPath.ts}core/*.ts`,
+        `${srcPath.ts}util/*.ts`,
         `${srcPath.ts}*.ts`
     ];
 

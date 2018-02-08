@@ -27,24 +27,6 @@ module pl {
             }
         };
 
-        /**
-         * Utility method to extend defaults with user settings
-         * @param {object} source
-         * @param {object} settings
-         * @return {object}
-         */
-        static extendsDefaults(source: Object, settings: Object) {
-            let property;
-
-            for (property in settings) {
-                if (settings.hasOwnProperty(property)) {
-                    source[property] = settings[property];
-                }
-            }
-
-            return source;
-        }
-
         // endregion
 
         // region Fields
@@ -84,7 +66,7 @@ module pl {
 
             // Create settings by extending defaults with passed
             // settings in constructor.
-            this._settings = Modal.extendsDefaults(defaults, settings || {});
+            this._settings = Util.extendsDefaults(defaults, settings || {});
 
             // Select transitionend that browser support.
             this._transitionend = Modal.transitionSelect();
@@ -182,10 +164,10 @@ module pl {
             let body = document.body;
 
             // Let scroll in body
-            body.className = body.className.replace(/\s?\bno-scroll\b/g, '');
+            Classie.removeClass(body, 'no-scroll');
 
-            this.overlay.className = this.overlay.className.replace(/\s?\bpl-modal-open\b/g, '');
-            this.modal.className = this.modal.className.replace(/\s?\bpl-modal-open\b/g, '');
+            Classie.removeClass(this.overlay, 'pl-modal-open');
+            Classie.removeClass(this.modal, 'pl-modal-open');
         }
 
         /**
@@ -194,7 +176,10 @@ module pl {
          */
         changeEffect(effectName: string) {
             this._settings['effectName'] = effectName;
-            this.modal.className = `pl-modal ${this._settings['effectName']}`;
+
+            Classie.reset(this.modal);
+            Classie.addClass(this.modal, 'pl-modal');
+            Classie.addClass(this.modal, this._settings['effectName']);
         }
 
         /**
@@ -212,15 +197,15 @@ module pl {
             body.appendChild(this.modal);
 
             // Avoid scroll in void since modal is open.
-            body.className += 'no-scroll';
+            Classie.addClass(body, 'no-scroll');
 
             // Force the browser to recognize the elements that we just added.
             window.getComputedStyle(this.overlay).backgroundColor;
             window.getComputedStyle(this.modal).opacity;
             window.getComputedStyle(this.content).opacity;
 
-            this.overlay.className += ' pl-modal-open';
-            this.modal.className += ' pl-modal-open';
+            Classie.addClass(this.overlay, 'pl-modal-open');
+            Classie.addClass(this.modal, 'pl-modal-open');
         }
 
         /**
@@ -319,7 +304,7 @@ module pl {
         get overlay(): HTMLElement {
             if (!this._overlay) {
                 this._overlay = document.createElement('div');
-                this._overlay.className = 'pl-modal-overlay';
+                Classie.addClass(this._overlay, 'pl-modal-overlay');
             }
 
             return this._overlay;
@@ -338,7 +323,8 @@ module pl {
         get modal(): HTMLElement {
             if (!this._modal) {
                 this._modal = document.createElement('div');
-                this._modal.className = `pl-modal ${this._settings['effectName']}`;
+                Classie.addClass(this._modal, 'pl-modal');
+                Classie.addClass(this._modal, this._settings['effectName']);
             }
 
             return this._modal;
@@ -357,7 +343,7 @@ module pl {
         get content(): HTMLElement {
             if (!this._content) {
                 this._content = document.createElement('div');
-                this._content.className = 'pl-modal-content';
+                Classie.addClass(this._content, 'pl-modal-content');
             }
 
             return this._content;
@@ -376,7 +362,7 @@ module pl {
         get closeButton(): HTMLElement {
             if (!this._closeButton) {
                 this._closeButton = document.createElement('div');
-                this._closeButton.className = 'pl-modal-close-button';
+                Classie.addClass(this._closeButton, 'pl-modal-close-button');
             }
 
             return this._closeButton;

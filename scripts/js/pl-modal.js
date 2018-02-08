@@ -48,6 +48,112 @@ var pl;
     pl.PLEvent = PLEvent;
 })(pl || (pl = {}));
 /**
+ * Created by cesarmejia on 07/02/2018.
+ */
+(function (pl) {
+    var Classie = /** @class */ (function () {
+        function Classie() {
+        }
+        /**
+         * Adds the specified class to an element.
+         * @param {HTMLElement} elem
+         * @param {string} className
+         */
+        Classie.addClass = function (elem, className) {
+            if (elem.classList)
+                elem.classList.add(className);
+            else if (!Classie.hasClass(elem, className))
+                elem.className += " " + className;
+        };
+        /**
+         * Determine whether any of the matched elements are assigned the given class.
+         * @param {HTMLElement} elem
+         * @param {string} className
+         * @returns {boolean}
+         */
+        Classie.hasClass = function (elem, className) {
+            return elem.classList
+                ? elem.classList.contains(className)
+                : new RegExp("\\b" + className + "\\b").test(elem.className);
+        };
+        /**
+         * Remove class from element.
+         * @param {HTMLElement} elem
+         * @param {string} className
+         */
+        Classie.removeClass = function (elem, className) {
+            if (elem.classList)
+                elem.classList.remove(className);
+            else
+                elem.className = elem.className.replace(new RegExp("\\b" + className + "\\b", "g"), '');
+        };
+        /**
+         * Remove all classes in element.
+         * @param {HTMLElement} elem
+         */
+        Classie.reset = function (elem) {
+            elem.className = '';
+        };
+        /**
+         * Add or remove class from element.
+         * @param {HTMLElement} elem
+         * @param {string} className
+         */
+        Classie.toggleClass = function (elem, className) {
+            if (elem.classList)
+                elem.classList.toggle(className);
+            else
+                Classie.hasClass(elem, className)
+                    ? Classie.removeClass(elem, className)
+                    : Classie.addClass(elem, className);
+        };
+        return Classie;
+    }());
+    pl.Classie = Classie;
+})(pl || (pl = {}));
+/**
+ * Created by Sexar on 07/02/2018.
+ */
+(function (pl) {
+    var Util = /** @class */ (function () {
+        function Util() {
+        }
+        /**
+         * Capitalize text.
+         * @param {string} text
+         * @returns {string}
+         */
+        Util.capitalizeText = function (text) {
+            return text.replace(/\w/, function (l) { return l.toUpperCase(); });
+        };
+        /**
+         * Merge objects and create a new one.
+         * @param {Array<Object>} objects
+         * @return {Object}
+         */
+        Util.extendsDefaults = function () {
+            var objects = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                objects[_i] = arguments[_i];
+            }
+            var result = {}, i;
+            for (i = 0; i < objects.length; i++) {
+                (function (currentObj) {
+                    var prop;
+                    for (prop in currentObj) {
+                        if (currentObj.hasOwnProperty(prop)) {
+                            result[prop] = currentObj[prop];
+                        }
+                    }
+                })(objects[i]);
+            }
+            return result;
+        };
+        return Util;
+    }());
+    pl.Util = Util;
+})(pl || (pl = {}));
+/**
  * Created by cesarmejia on 20/08/2017.
  */
 (function (pl) {
@@ -74,7 +180,7 @@ var pl;
             };
             // Create settings by extending defaults with passed
             // settings in constructor.
-            this._settings = Modal.extendsDefaults(defaults, settings || {});
+            this._settings = pl.Util.extendsDefaults(defaults, settings || {});
             // Select transitionend that browser support.
             this._transitionend = Modal.transitionSelect();
             this.buildOut();
@@ -99,21 +205,6 @@ var pl;
             }
         };
         ;
-        /**
-         * Utility method to extend defaults with user settings
-         * @param {object} source
-         * @param {object} settings
-         * @return {object}
-         */
-        Modal.extendsDefaults = function (source, settings) {
-            var property;
-            for (property in settings) {
-                if (settings.hasOwnProperty(property)) {
-                    source[property] = settings[property];
-                }
-            }
-            return source;
-        };
         // region Private Methods
         /**
          * Create modal elements.
@@ -188,9 +279,9 @@ var pl;
                 return;
             var body = document.body;
             // Let scroll in body
-            body.className = body.className.replace(/\s?\bno-scroll\b/g, '');
-            this.overlay.className = this.overlay.className.replace(/\s?\bpl-modal-open\b/g, '');
-            this.modal.className = this.modal.className.replace(/\s?\bpl-modal-open\b/g, '');
+            pl.Classie.removeClass(body, 'no-scroll');
+            pl.Classie.removeClass(this.overlay, 'pl-modal-open');
+            pl.Classie.removeClass(this.modal, 'pl-modal-open');
         };
         /**
          * Change effect from modal.
@@ -198,7 +289,9 @@ var pl;
          */
         Modal.prototype.changeEffect = function (effectName) {
             this._settings['effectName'] = effectName;
-            this.modal.className = "pl-modal " + this._settings['effectName'];
+            pl.Classie.reset(this.modal);
+            pl.Classie.addClass(this.modal, 'pl-modal');
+            pl.Classie.addClass(this.modal, this._settings['effectName']);
         };
         /**
          * Add modal to DOM and show it.
@@ -212,13 +305,13 @@ var pl;
             body.appendChild(this.overlay);
             body.appendChild(this.modal);
             // Avoid scroll in void since modal is open.
-            body.className += 'no-scroll';
+            pl.Classie.addClass(body, 'no-scroll');
             // Force the browser to recognize the elements that we just added.
             window.getComputedStyle(this.overlay).backgroundColor;
             window.getComputedStyle(this.modal).opacity;
             window.getComputedStyle(this.content).opacity;
-            this.overlay.className += ' pl-modal-open';
-            this.modal.className += ' pl-modal-open';
+            pl.Classie.addClass(this.overlay, 'pl-modal-open');
+            pl.Classie.addClass(this.modal, 'pl-modal-open');
         };
         /**
          * Set modal content.
@@ -293,7 +386,7 @@ var pl;
             get: function () {
                 if (!this._overlay) {
                     this._overlay = document.createElement('div');
-                    this._overlay.className = 'pl-modal-overlay';
+                    pl.Classie.addClass(this._overlay, 'pl-modal-overlay');
                 }
                 return this._overlay;
             },
@@ -308,7 +401,8 @@ var pl;
             get: function () {
                 if (!this._modal) {
                     this._modal = document.createElement('div');
-                    this._modal.className = "pl-modal " + this._settings['effectName'];
+                    pl.Classie.addClass(this._modal, 'pl-modal');
+                    pl.Classie.addClass(this._modal, this._settings['effectName']);
                 }
                 return this._modal;
             },
@@ -323,7 +417,7 @@ var pl;
             get: function () {
                 if (!this._content) {
                     this._content = document.createElement('div');
-                    this._content.className = 'pl-modal-content';
+                    pl.Classie.addClass(this._content, 'pl-modal-content');
                 }
                 return this._content;
             },
@@ -338,7 +432,7 @@ var pl;
             get: function () {
                 if (!this._closeButton) {
                     this._closeButton = document.createElement('div');
-                    this._closeButton.className = 'pl-modal-close-button';
+                    pl.Classie.addClass(this._closeButton, 'pl-modal-close-button');
                 }
                 return this._closeButton;
             },
