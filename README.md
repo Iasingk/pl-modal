@@ -190,4 +190,5 @@ You can access to elements of `pl.Modal` as read only with the follow getters:
         <td>Gets the close button element.</td>
     </tr>
 </table>
+
 ### Browser Support
