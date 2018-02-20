@@ -278,6 +278,8 @@ var pl;
             if (!this._isOpen)
                 return;
             var body = document.body;
+            // Fire closing event.
+            this.onClosing();
             // Let scroll in body
             pl.Classie.removeClass(body, 'no-scroll');
             pl.Classie.removeClass(this.overlay, 'pl-modal-open');
@@ -306,6 +308,8 @@ var pl;
             body.appendChild(this.modal);
             // Avoid scroll in void since modal is open.
             pl.Classie.addClass(body, 'no-scroll');
+            // Fire opening event.
+            this.onOpening();
             // Force the browser to recognize the elements that we just added.
             window.getComputedStyle(this.overlay).backgroundColor;
             window.getComputedStyle(this.modal).opacity;
@@ -336,6 +340,22 @@ var pl;
         /**
          * Fires when modal is closed.
          */
+        Modal.prototype.onClosing = function () {
+            if (this._closing) {
+                this._closing.fire();
+            }
+        };
+        /**
+         * Fires when modal is opened.
+         */
+        Modal.prototype.onOpening = function () {
+            if (this._opening) {
+                this._opening.fire();
+            }
+        };
+        /**
+         * Fires when modal is closed.
+         */
         Modal.prototype.onClosed = function () {
             if (this._closed) {
                 this._closed.fire();
@@ -350,6 +370,34 @@ var pl;
                 this._opened.fire();
             }
         };
+        Object.defineProperty(Modal.prototype, "closing", {
+            /**
+             * Get modal closing event.
+             * @returns {pl.PLEvent}
+             */
+            get: function () {
+                if (!this._closing) {
+                    this._closing = new pl.PLEvent();
+                }
+                return this._closing;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Modal.prototype, "opening", {
+            /**
+             * Get modal opening event.
+             * @returns {pl.PLEvent}
+             */
+            get: function () {
+                if (!this._opening) {
+                    this._opening = new pl.PLEvent();
+                }
+                return this._opening;
+            },
+            enumerable: true,
+            configurable: true
+        });
         Object.defineProperty(Modal.prototype, "closed", {
             /**
              * Get modal closed event.

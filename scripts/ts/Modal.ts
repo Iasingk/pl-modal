@@ -163,6 +163,9 @@ module pl {
 
             let body = document.body;
 
+            // Fire closing event.
+            this.onClosing();
+
             // Let scroll in body
             Classie.removeClass(body, 'no-scroll');
 
@@ -199,6 +202,9 @@ module pl {
             // Avoid scroll in void since modal is open.
             Classie.addClass(body, 'no-scroll');
 
+            // Fire opening event.
+            this.onOpening();
+
             // Force the browser to recognize the elements that we just added.
             window.getComputedStyle(this.overlay).backgroundColor;
             window.getComputedStyle(this.modal).opacity;
@@ -234,6 +240,24 @@ module pl {
         /**
          * Fires when modal is closed.
          */
+        private onClosing() {
+            if (this._closing) {
+                this._closing.fire();
+            }
+        }
+
+        /**
+         * Fires when modal is opened.
+         */
+        private onOpening() {
+            if (this._opening) {
+                this._opening.fire();
+            }
+        }
+
+        /**
+         * Fires when modal is closed.
+         */
         private onClosed() {
             if (this._closed) {
                 this._closed.fire();
@@ -256,6 +280,42 @@ module pl {
         // region Properties
 
         /**
+         * Modal closing event.
+         * @type {pl.PLEvent}
+         */
+        private _closing: PLEvent;
+
+        /**
+         * Get modal closing event.
+         * @returns {pl.PLEvent}
+         */
+        get closing(): PLEvent {
+            if (!this._closing) {
+                this._closing = new PLEvent();
+            }
+
+            return this._closing;
+        }
+
+        /**
+         * Modal opening event.
+         * @type {pl.PLEvent}
+         */
+        private _opening: PLEvent;
+
+        /**
+         * Get modal opening event.
+         * @returns {pl.PLEvent}
+         */
+        get opening(): PLEvent {
+            if (!this._opening) {
+                this._opening = new PLEvent();
+            }
+
+            return this._opening;
+        }
+
+        /**
          * Modal closed event.
          * @type {pl.PLEvent}
          */
@@ -265,7 +325,7 @@ module pl {
          * Get modal closed event.
          * @return {pl.PLEvent}
          */
-        get closed() {
+        get closed(): PLEvent {
             if (!this._closed) {
                 this._closed = new PLEvent();
             }
@@ -283,7 +343,7 @@ module pl {
          * Get modal opened event.
          * @return {pl.PLEvent}
          */
-        get opened() {
+        get opened(): PLEvent {
             if (!this._opened) {
                 this._opened = new PLEvent();
             }

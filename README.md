@@ -45,9 +45,15 @@ Use `settings` to personalize the modal instance.
     </tr>
 </table>
 
-A modal instance has two events to notify when it was opened and closed and can be called as follows:
+A modal instance has four events to notify when it was opening, closing, opened and closed and can be called as follows:
 
 ```javascript
+// Notify when modal is opening.
+modal.opening.add(() => { /* ... */ });
+
+// Notify when modal is closing.
+modal.closing.add(() => { /* ... */ });
+
 // Notify when modal is opened.
 modal.opened.add(() => { /* ... */ });
 
@@ -154,4 +160,34 @@ let modal = new pl.Modal({ effectName: 'custom-effect' });
     </tr>
 </table>
 
+### Getters
+You can access to elements of `pl.Modal` as read only with the follow getters:
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Return value</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>overlay</code></td>
+        <td><code>HTMLElement</code></td>
+        <td>Gets the overlay element.</td>
+    </tr>
+    <tr>
+        <td><code>modal</code></td>
+        <td><code>HTMLElement</code></td>
+        <td>Gets the modal element.</td>
+    </tr>
+    <tr>
+        <td><code>content</code></td>
+        <td><code>HTMLElement</code></td>
+        <td>Gets the content element.</td>
+    </tr>
+    <tr>
+        <td><code>closeButton</code></td>
+        <td><code>HTMLElement</code></td>
+        <td>Gets the close button element.</td>
+    </tr>
+</table>
 ### Browser Support

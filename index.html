@@ -99,6 +99,9 @@
                 var modal = new pl.Modal({ effectName: 'pl-effect-11' });
 
                 // Attach handlers to modal events.
+                modal.opening.add(function () { console.log('modal opening'); });
+                modal.closing.add(function () { console.log('modal closing'); });
+
                 modal.opened.add(function() { console.log('modal opened'); });
                 modal.closed.add(function() { console.log('modal closed'); });
 
