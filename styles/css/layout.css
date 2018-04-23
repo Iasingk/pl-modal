@@ -46,29 +46,44 @@ body.no-scroll {
 /* Cover Styles */
 #cover {
     left: 50%;
+    max-width: 870px;
     position: absolute;
     top: 50%;
     text-align: center;
+    width: 85%;
 
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
 
 #cover h1 {
-    font-size: 6.333em;
+    font-size: 5.333em;
     font-weight: 200;
     margin: 0 0 .25em 0;
+}
+
+#cover ul {
+    list-style: none;
+    margin: 0 0 40px;
+    padding: 0;
+}
+
+#cover ul li {
+    display: inline-block;
+    margin: 5px 5px;
 }
 
 #cover button {
     background-color: #53a9e1;
     border: none;
     color: #fff;
+    cursor: pointer;
     font-family: inherit;
     font-size: 1.333em;
     font-weight: 300;
     padding: .25em 1em;
 }
-
 
 /* Dummy Template */
 .dummy-template {
@@ -76,9 +91,14 @@ body.no-scroll {
     color: #fff;
 }
 
+.dummy-template > div {
+    font-size: 1.333em;
+    padding: 35px 30px;
+}
+
 .dummy-template h3 {
     background-color: #53a9e1;
-    font-size: 45px;
+    font-size: 3em;
     font-weight: 300;
     margin: 0;
     padding: 10px;
@@ -89,7 +109,26 @@ body.no-scroll {
     font-weight: 400;
 }
 
-.dummy-template > div {
-    font-size: 16px;
-    padding: 35px 30px;
+.dummy-template ul {
+    padding-left: 1.666em;
+}
+
+@media (max-width: 767px) {
+
+    body {
+        font-size: 12px;
+    }
+
+    #cover {
+        width: 95%;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    body {
+        font-size: 10px;
+    }
+
 }

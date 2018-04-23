@@ -64,7 +64,23 @@
         <!-- Cover -->
         <div id="cover">
             <h1>PL Modal</h1>
-            <button id="btn-show-modal">Open modal</button>
+
+            <ul>
+                <li><button data-pl-modal-effect="default">Default</button></li>
+                <li><button data-pl-modal-effect="pl-effect-1">Fade in and Scale up</button></li>
+                <li><button data-pl-modal-effect="pl-effect-2">Slide from the right</button></li>
+                <li><button data-pl-modal-effect="pl-effect-3">Slide from the bottom</button></li>
+                <li><button data-pl-modal-effect="pl-effect-4">Newspaper</button></li>
+                <li><button data-pl-modal-effect="pl-effect-5">Fall</button></li>
+                <li><button data-pl-modal-effect="pl-effect-6">Side fall</button></li>
+                <li><button data-pl-modal-effect="pl-effect-7">Slide and stick to top</button></li>
+                <li><button data-pl-modal-effect="pl-effect-8">3D flip horizontal</button></li>
+                <li><button data-pl-modal-effect="pl-effect-9">3D flip vertical</button></li>
+                <li><button data-pl-modal-effect="pl-effect-10">3D Sign</button></li>
+                <li><button data-pl-modal-effect="pl-effect-11">Super scaled</button></li>
+                <li><button data-pl-modal-effect="pl-effect-12">Rotate from bottom</button></li>
+                <li><button data-pl-modal-effect="pl-effect-13">3D Rotate in from left</button></li>
+            </ul>
         </div>
         <!-- /.Cover -->
 
@@ -92,7 +108,7 @@
                 'use strict';
 
                 // Point to needed elements.
-                var button = d.getElementById('btn-show-modal');
+                var buttons = d.querySelectorAll('button[data-pl-modal-effect]');
                 var dummyTemplate = d.querySelector('.dummy-template');
 
                 // Create modal instance.
@@ -105,8 +121,16 @@
                 modal.opened.add(function() { console.log('modal opened'); });
                 modal.closed.add(function() { console.log('modal closed'); });
 
-                // Show modal on click.
-                button.addEventListener('click', function(ev) { modal.open(dummyTemplate); }, false);
+                // Change modal effect.
+                [].forEach.call(buttons, function(button) {
+                    button.addEventListener('click', function (ev) {
+                        ev.preventDefault();
+                        var effect = button.dataset['plModalEffect'];
+
+                        modal.changeEffect(effect);
+                        modal.open(dummyTemplate);
+                    }, false);
+                });
 
             })(document);
         </script>

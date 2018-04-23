@@ -60,10 +60,17 @@ var pl;
          * @param {string} className
          */
         Classie.addClass = function (elem, className) {
-            if (elem.classList)
-                elem.classList.add(className);
-            else if (!Classie.hasClass(elem, className))
-                elem.className += " " + className;
+            var parts = className.split(" "), i = 0;
+            if (elem.classList) {
+                for (; i < parts.length; i++) {
+                    elem.classList.add(parts[i]);
+                }
+            }
+            else if (!Classie.hasClass(elem, className)) {
+                for (; i < parts.length; i++) {
+                    elem.className += " " + parts[i];
+                }
+            }
         };
         /**
          * Determine whether any of the matched elements are assigned the given class.
@@ -82,10 +89,17 @@ var pl;
          * @param {string} className
          */
         Classie.removeClass = function (elem, className) {
-            if (elem.classList)
-                elem.classList.remove(className);
-            else
-                elem.className = elem.className.replace(new RegExp("\\b" + className + "\\b", "g"), '');
+            var parts = className.split(" "), i = 0;
+            if (elem.classList) {
+                for (; i < parts.length; i++) {
+                    elem.classList.remove(parts[i]);
+                }
+            }
+            else {
+                for (; i < parts.length; i++) {
+                    elem.className = elem.className.replace(new RegExp("\\b" + parts[i] + "\\b", "g"), '');
+                }
+            }
         };
         /**
          * Remove all classes in element.

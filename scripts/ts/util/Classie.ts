@@ -11,8 +11,12 @@ module pl {
          * @param {string} className
          */
         static addClass(elem: HTMLElement, className: string) {
-            if (elem.classList) elem.classList.add(className);
-            else if (!Classie.hasClass(elem, className)) elem.className += " " + className;
+            let parts: Array<string> = className.split(" "), i: number = 0;
+            if (elem.classList) {
+                for (; i < parts.length; i++) { elem.classList.add(parts[i]); }
+            } else if (!Classie.hasClass(elem, className)) {
+                for (; i < parts.length; i++) { elem.className += " " + parts[i]; }
+            }
         }
 
         /**
@@ -33,8 +37,14 @@ module pl {
          * @param {string} className
          */
         static removeClass(elem: HTMLElement, className: string) {
-            if (elem.classList) elem.classList.remove(className);
-            else elem.className = elem.className.replace(new RegExp("\\b" + className + "\\b", "g"), '');
+            let parts: Array<string> = className.split(" "), i: number = 0;
+            if (elem.classList) {
+                for (; i < parts.length; i++) { elem.classList.remove(parts[i]); }
+            } else {
+                for (; i < parts.length; i++) {
+                    elem.className = elem.className.replace(new RegExp("\\b" + parts[i] + "\\b", "g"), '');
+                }
+            }
         }
 
         /**

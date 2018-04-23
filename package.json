@@ -6,15 +6,15 @@
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
+    "gulp-autoprefixer": "^5.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-livereload": "^3.8.1",
-    "gulp-plumber": "^1.1.0",
-    "gulp-stylus": "^2.6.0",
-    "gulp-typescript": "^3.2.3",
+    "gulp-plumber": "^1.2.0",
+    "gulp-stylus": "^2.7.0",
+    "gulp-typescript": "^4.0.2",
     "gulp-uglify": "^3.0.0",
     "gulp-uglifycss": "^1.0.9",
-    "typescript": "^2.6.2"
+    "typescript": "^2.8.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
